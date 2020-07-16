@@ -1,0 +1,42 @@
+<!--
+Copyright (C) 2018-2020 AI Atelier Ltd.
+
+This file is part of Invizi.
+
+Invizi is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or (at
+your option) any later version.
+
+Invizi is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <% if (htmlWebpackPlugin.options.nodeModules) { %>
+    <!-- Add `node_modules/` to global paths so `require` works properly in development -->
+    <script>
+      require('module').globalPaths.push('<%= htmlWebpackPlugin.options.nodeModules.replace(/\\/g, '\\\\') %>')
+    </script>
+    <% } %>
+  </head>
+
+  <body class="dark-skin">
+    <div id="app"></div>
+
+    <!-- Set `__static` path to static files in production -->
+    <script>
+      if (process.env.NODE_ENV !== 'development') window.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
+    </script>
+    <script src="static/js/rxjs.umd.min.js"></script>
+  </body>
+</html>
+

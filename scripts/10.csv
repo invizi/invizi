@@ -1,0 +1,13 @@
+from,quantity_from,to,quantity_to,account_name,date,id
+,0,usd,4200,test,1574220044,1
+usd,4000,bitcoin,1,test,1574220044,2
+usd,130,ethereum,1,test,1574220044,3
+,0,usd,4200,test,1574209244,4
+usd,4000,bitcoin,1,test,1574209244,5
+usd,130,ethereum,1,test,1574209244,6
+,0,usd,4200,test,1574198444,7
+usd,4000,bitcoin,1,test,1574198444,8
+usd,130,ethereum,1,test,1574198444,9
+,0,usd,4200,test,1574187644,10
+usd,4000,bitcoin,1,test,1574187644,11
+usd,130,ethereum,1,test,1574187644,12

@@ -1,0 +1,13 @@
+/* latin */
+@font-face {
+  font-family: 'Fira Mono';
+  font-style: normal;
+  src: local('Fira Mono'), url(../../font/fira-mono/FiraMono-Regular.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Fira Mono';
+  font-style: normal;
+  font-weight: bold;
+  src: local('Fira Mono'), url(../../font/fira-mono/FiraMono-Bold.ttf) format('truetype');
+}

@@ -11,3 +11,4 @@ thumbs.db
 !.gitkeep
 tmp/*
 yarn-error.log
+.sass-cache/

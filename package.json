@@ -74,8 +74,6 @@
     "electron-updater": "^4.0.0",
     "fast-csv": "^2.4.1",
     "getmac": "^1.4.6",
-    "hopscotch": "^0.3.1",
-    "katex": "^0.10.0-alpha",
     "lodash": "^4.17.4",
     "mathjs": "^4.0.0",
     "moment": "^2.23.0",
