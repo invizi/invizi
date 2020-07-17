@@ -10,7 +10,7 @@
   "license": null,
   "main": "./dist/electron/main.js",
   "scripts": {
-    "build": "node .electron-vue/build.js && electron-builder",
+    "build": "node .electron-vue/build.js && electron-builder --publish=never",
     "build:linux": "node .electron-vue/build.js && electron-builder --linux deb rpm AppImage snap",
     "build:win": "node .electron-vue/build.js && electron-builder -w",
     "build:dir": "node .electron-vue/build.js && electron-builder --dir",
