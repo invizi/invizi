@@ -25,6 +25,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm install
+    - run: npm config set script-shell "C:\\Program Files (x86)\\git\\bin\\bash.exe"  
     - run: npm run build 
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2
