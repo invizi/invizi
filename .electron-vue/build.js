@@ -2,6 +2,7 @@
 
 process.env.NODE_ENV = 'production'
 
+const { say } = require('cfonts')
 const chalk = require('chalk')
 const del = require('del')
 const { spawn } = require('child_process')
@@ -114,6 +115,18 @@ function web () {
 
 function greeting () {
   const cols = process.stdout.columns
-  console.log(chalk.yellow.bold('\n  lets-build'))
+  let text = ''
+
+  if (cols > 85) text = 'lets-build'
+  else if (cols > 60) text = 'lets-|build'
+  else text = false
+
+  if (text && !isCI) {
+    say(text, {
+      colors: ['yellow'],
+      font: 'simple3d',
+      space: false
+    })
+  } else console.log(chalk.yellow.bold('\n  lets-build'))
   console.log()
 }
