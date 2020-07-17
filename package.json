@@ -106,6 +106,7 @@
     "babel-register": "^6.26.0",
     "babili-webpack-plugin": "^0.1.2",
     "benchmark": "^2.1.4",
+    "cfonts": "^2.1.2",
     "chai": "^4.1.2",
     "chalk": "^2.4.1",
     "copy-webpack-plugin": "^4.5.1",
