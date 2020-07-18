@@ -42,6 +42,8 @@ function createWindow () {
     backgroundColor: '#262626'
   })
 
+  mainWindow.setMenuBarVisibility(false)
+
   mainWindow.webContents.on('will-navigate', (event, url) => {
     event.preventDefault()
   })
