@@ -15,12 +15,15 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
 */
+
+import InviziConfig from '../InviziConfig.js'
 const axios = require('axios')
 
 const instance = axios.create({
-  // baseURL: 'https://some-domain.com/api/',
-  // timeout: 1000,
-  headers: {'X-Invizi-From': 'desktop'}
+  headers: {
+    'X-Invizi-From': 'desktop',
+    'X-Invizi-Version': InviziConfig.version
+  }
 })
 
 export default instance

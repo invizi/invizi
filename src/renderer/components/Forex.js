@@ -27,7 +27,7 @@ const STATIC_SYMBOLS = [
   'MYR', 'NOK', 'NZD', 'PHP', 'PLN', 'RON', 'RUB', 'SEK', 'SGD', 'THB',
   'TRY', 'ZAR']
 
-const ROOT_URL = USE_LOCAL_URL ? 'http://0.0.0.0:3000' : 'https://apif.invizi.co'
+const ROOT_URL = USE_LOCAL_URL ? 'http://0.0.0.0:5000' : 'https://apif.invizi.co'
 const END_POINT = `${ROOT_URL}/forex`
 const STABLE_COINS = ['tether', 'usd-coin', 'binance-usd', 'paxos-standard', 'dai', 'true-usd', 'husd']
 
@@ -64,7 +64,7 @@ var Forex = {
   isStableCoinOrFiat (coinId) {
     if (!coinId) return false
 
-    let stable = this.symbolsWithUSD().map(currency => currency.toLowercase).concat(STABLE_COINS)
+    let stable = this.symbolsWithUSD().map(currency => currency.toLowerCase).concat(STABLE_COINS)
     return stable.includes(coinId)
   },
 

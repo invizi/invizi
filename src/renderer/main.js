@@ -192,8 +192,6 @@ InviziCache.loadDbToMemory().then((val) => {
     return process.mainModule.filename.indexOf('app.asar') === -1
   }
 
-  Invizi.version = '0.9.3'
-
   window.Invizi = Invizi
 
   window.inviziApp = { // TODO move to Invizi object above
