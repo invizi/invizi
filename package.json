@@ -11,6 +11,7 @@
   "main": "./dist/electron/main.js",
   "scripts": {
     "build": "node .electron-vue/build.js && electron-builder --publish=never",
+    "build:mac": "node .electron-vue/build.js && electron-builder --publish=never",
     "build:linux": "node .electron-vue/build.js && electron-builder --publish=never --linux deb rpm AppImage snap",
     "build:win": "node .electron-vue/build.js && electron-builder -w --publish=never",
     "build:dir": "node .electron-vue/build.js && electron-builder --dir",
@@ -26,7 +27,7 @@
     "test": "npm run unit && npm run e2e",
     "unit": "karma start test/unit/karma.conf.js",
     "unit:debug": "karma start test/unit/karma.conf.js --single-run=false --debug",
-    "prebuild": "scripts/prebuild-check.sh",
+    "prebuild:mac": "scripts/prebuild-check.sh",
     "postinstall": "npm run lint:fix",
     "nodify": "npx babel-cli --presets=es2015 --out-dir lib"
   },
