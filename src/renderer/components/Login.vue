@@ -106,7 +106,6 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
       return {
         password: undefined,
         decryptingProgress: undefined,
-        subscriptionErrorMsg: undefined,
         newPassword: undefined,
         confirmPassword: undefined,
         hasPassword: true,
