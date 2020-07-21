@@ -1,5 +1,5 @@
 let InviziConfig = {
-  version: '0.9.3'
+  version: '1.0.0'
 }
 
 export default InviziConfig
