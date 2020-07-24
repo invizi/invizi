@@ -158,9 +158,9 @@ class OnlineAccountClient extends InviziModel {
       filter(data => data), // filter timerObs values
       map(result => {
         let tradesFiltered = result.data
-        // if (account.last_sync_at) {
-        //   tradesFiltered = result.data.filter(trade => trade.date > account.last_sync_at / 1000)
-        // }
+        if (account.last_sync_at) {
+          tradesFiltered = result.data.filter(trade => trade.date > account.last_sync_at / 1000)
+        }
         tradesFiltered.progress = (currentIter + 1) / maxIter
         currentIter++
         return result
