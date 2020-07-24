@@ -37,7 +37,7 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
 
                   <div class="col-lg-5 text-right" v-show="!(inviziApp && inviziApp.stealthMode) && balance && allBalances.USD && coin && balance[coin.coin_id]">
                     <h3 style="font-size: 1rem">Your Balance</h3>
-                    <h4 style="font-size: 3rem"><span>{{balance[coin.coin_id]}}</span> {{coin.symbol}}</h4>
+                    <h4 style="font-size: 3rem"><span>{{balance[coin.coin_id] | formatBTC}}</span> {{coin.symbol}}</h4>
                     <h5><i class="fa fa-dollar" title="dollar" style="margin-right: 2px"></i><animated-integer :value="allBalances.USD[coin.coin_id]" v-if="allBalances.USD && allBalances.USD[coin.coin_id]"></animated-integer></h5>
                     <h5><i class="fa fa-btc" title="bitcoin" style="margin-right: 2px"></i><animated-integer :value="allBalances.BTC[coin.coin_id]" :currency="'BTC'" v-if="allBalances.BTC && allBalances.BTC[coin.coin_id]"></animated-integer></h5>
                   </div>
