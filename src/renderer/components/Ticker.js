@@ -37,15 +37,14 @@ let Ticker = {
     kraken: 'KrakenExchangeClient'
   },
   // fillIdAndName([], {BTG:'bitcoin-gold'})
-  fillIdAndName: function (exchangeTickers, except = {}, newCoins = {}) {
-    // let except = exceptOptions || {}
-    let cmcTickers = Ticker.last().data
+  fillIdAndName (exchangeTickers, except = {}, newCoins = {}) {
+    let inviziTicker = Ticker.last().data
     for (let ticker of exchangeTickers) {
       let currentTicker = null
       if (except[ticker.symbol]) {
-        currentTicker = _.find(cmcTickers, {coin_id: except[ticker.symbol]})
+        currentTicker = _.find(inviziTicker, {coin_id: except[ticker.symbol]})
       } else {
-        currentTicker = _.find(cmcTickers, {coin_id: ticker.coin_id})
+        currentTicker = _.find(inviziTicker, {coin_id: ticker.coin_id})
       }
       if (currentTicker) {
         ticker.coin_id = currentTicker.coin_id
@@ -60,9 +59,9 @@ let Ticker = {
   },
 
   fillFromId (exchangeTickers) {
-    let cmcTickers = Ticker.last().data
+    let inviziTicker = Ticker.last().data
     let cmcTickerSlugMap = {}
-    cmcTickers.forEach(cmcTicker => {
+    inviziTicker.forEach(cmcTicker => {
       cmcTickerSlugMap[cmcTicker.coin_id] = cmcTicker
     })
     for (let ticker of exchangeTickers) {

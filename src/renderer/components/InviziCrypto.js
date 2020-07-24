@@ -16,7 +16,6 @@ You should have received a copy of the GNU General Public License
 along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
 */
 const nodecrypto = require('crypto')
-const argon2 = require('argon2')
 const _ = require('lodash')
 const AES_IV_LENGTH = 16
 const TRIPLEDES_IV_LENGTH = 8
@@ -24,7 +23,7 @@ const TRIPLEDES_KEY_SIZE = 24
 const DETERMINISTIC_ALGO = 'des-ede3-cbc'
 const DB_ENCODING = 'base64'
 
-let ENCRYPT = true
+let ENCRYPT = false
 
 function findType (any) {
   return ['Array', 'Object', 'String', 'Number'].find((type) => _[`is${type}`](any))
@@ -104,15 +103,7 @@ function uuidv4 () {
   )
 }
 
-function hashFromArgonString (digest) {
-  return _.last(digest.split('$'))
-}
-
-function convertString (input, from, to) {
-  return Buffer.from(input, from).toString(to)
-}
-
-var InviziCrypto = {
+let InviziCrypto = {
 
   uuidv4: uuidv4,
 
@@ -127,16 +118,6 @@ var InviziCrypto = {
       return result
     }
     return result.toString(DB_ENCODING)
-  },
-
-  // Hash the password using argon2id, generate salt if needed
-  // @salt
-  async hashPassword (password, salt) {
-    let result = await argon2.hash(password, {salt: salt, type: argon2.argon2id})
-    // result is of the form '$argon2id$v=19$m=4096,t=3,p=1$8x40JUhNrOCfYBZN3TIffZ3mRInJnw4ldKs2+i+WSaE$If8l45ISF/v+aY3mPROOaxdGlGXXtQSUYa1mqKgfDi'
-    // return only the hash part
-    let hashString = hashFromArgonString(result) // in base64
-    return convertString(hashString, 'base64', 'hex')// in hex format
   },
 
   deactivate () {

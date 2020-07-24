@@ -19,6 +19,7 @@ import db from '@/components/Database'
 import InviziCrypto, { DB_ENCODING } from '@/components/InviziCrypto'
 import InviziCache from '@/components/InviziCache'
 import EventBus from '@/components/EventBus'
+import hashPassword from '@/crypto/hashPassword'
 
 const _ = require('lodash')
 const ipcRenderer = require('electron').ipcRenderer
@@ -50,7 +51,7 @@ var UserManager = {
   // @returns: authenticated: boolean
   async login (password) {
     const salt = await getSalt()
-    const hashedPassword = await InviziCrypto.hashPassword(password, salt)
+    const hashedPassword = await hashPassword(password, salt)
 
     let allTradesEncrypted
     // Encrypt the CHECK_MESSAGE with the user hashedpassword using AES-256
