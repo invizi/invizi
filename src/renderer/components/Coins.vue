@@ -294,7 +294,7 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
       this.allCoins = Ticker.fillNameAndImage(Ticker.last().data)
       this.coinLists = await CoinList.all()
       if (_.isEmpty(this.coinLists)) {
-        this.coinLists.push({name: 'FirstList', coins: ['bitcoin', 'ethereum']})
+        this.coinLists.push({name: 'Watchlist 1', coins: ['bitcoin', 'ethereum']})
       }
       this.onQuery()
       this.selectedCoinList = this.coinLists[0]
