@@ -19,7 +19,7 @@ import InviziCrypto from '@/components/InviziCrypto'
 const _ = require('lodash')
 const SALT = InviziCrypto.getSalt()
 
-describe.only('InviziCrypto', () => {
+describe('InviziCrypto', () => {
   const message = 'In code we trust'
   const password = 'super$password54'
   const badPassword = 'mybadpass123#'

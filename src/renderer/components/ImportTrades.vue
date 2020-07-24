@@ -18,10 +18,22 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
 <template>
   <div class="section">
     <h3 class="title--separator">Import Trades</h3>
-    <div class="col-lg-3">
-      <button type="button" class="btn btn-block btn-primary waves-effect
-                    waves-light" @click="selectFile()">Select CSV to import</button>
+    <div class="row">
+      <div class="col-lg-3">
+        <button type="button" class="btn btn-block btn-primary waves-effect
+                      waves-light" @click="selectFile()">Select CSV to import</button>
+      </div>
+
+      <div class="col-lg-3">
+        <v-select
+          v-bind:items="tradeTypes"
+          v-model="selectedTradeType"
+          label="Type"
+          autocomplete
+        ></v-select>
+      </div>
     </div>
+
     <div class="container">{{csvFileName}}</div>
     <div class="card card-cascade narrower" style="padding: 10px 10px" v-if="csvFileName">
       <div style="min-height: 48px">
@@ -44,14 +56,19 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
  import OnlineAccountClient from '@/models/OnlineAccountClient'
  import TradeClient from '@/components/TradeClient'
  import Snackbar from '@/utils/Snackbar'
+ import parseTrade from '@/parsers/parseTrade'
+ import AppMixin from '@/components/AppMixin'
  const {dialog} = require('electron').remote
  const _ = require('lodash')
 
  export default {
    title: 'Import Trades',
+   mixins: [AppMixin],
    data () {
      return {
        selected: [],
+       tradeTypes: ['Invizi', 'Delta'],
+       selectedTradeType: 'Invizi',
        importing: false,
        csvFileName: undefined
      }
@@ -105,7 +122,8 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
          }
          this.csvFileName = result.filePaths[0]
          Importer.csvToTrades(this.csvFileName).then((trades) => {
-           this.importItems = trades
+           // Convert to Invizi if necessary (not needed if it's already in Invizi format)
+           this.importItems = parseTrade(trades, this.selectedTradeType)
          })
        })
      }
