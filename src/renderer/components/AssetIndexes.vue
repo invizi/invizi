@@ -46,7 +46,7 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
         <div class="row" v-if="selectedAssetIndex">
           <div class="col-lg-3">
             <div class="row">
-              <div class="col-lg-8">
+              <div class="col-lg-11">
                 <v-select
                   v-bind:items="strategies"
                   v-model="strategy"
