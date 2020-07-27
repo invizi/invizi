@@ -216,6 +216,7 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
         this.coinList = _.filter(this.coinList, o => o.coin_id !== coin.coin_id)
         _.remove(this.selectedCoinList.coins, o => o === coin.coin_id)
         CoinList.save(this.selectedCoinList)
+        this.onQuery()
       },
       checkMove (evt) {
         // Cancel drag of already dragged/put objects
