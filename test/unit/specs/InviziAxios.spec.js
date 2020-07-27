@@ -18,7 +18,7 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
 import { requestOptions } from '@/utils/InviziAxios'
 import InviziConfig from '@/InviziConfig'
 
-describe.only('requestOptions', () => {
+describe('requestOptions', () => {
   it('has the correct format', function () {
     expect(!!requestOptions.headers).to.be.equal(true)
     expect(requestOptions.headers['X-Invizi-Version']).to.be.equal(InviziConfig.version)
