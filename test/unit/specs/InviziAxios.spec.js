@@ -15,23 +15,13 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
 */
+import { requestOptions } from '@/utils/InviziAxios'
+import InviziConfig from '@/InviziConfig'
 
-import InviziConfig from '../InviziConfig'
-import isDevelopment from './isDevelopment'
-const axios = require('axios')
-
-let requestOptions = {
-  headers: {
-    'X-Invizi-Version': InviziConfig.version
-  }
-}
-
-if (!isDevelopment) {
-  requestOptions.headers['X-Invizi-From'] = 'desktop'
-}
-
-export { requestOptions }
-
-const instance = axios.create(requestOptions)
-
-export default instance
+describe.only('requestOptions', () => {
+  it('has the correct format', function () {
+    expect(!!requestOptions.headers).to.be.equal(true)
+    expect(requestOptions.headers['X-Invizi-Version']).to.be.equal(InviziConfig.version)
+    expect(requestOptions.headers['X-Invizi-From']).not.to.be.equal('desktop')
+  })
+})

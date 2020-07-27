@@ -17,7 +17,7 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
 */
 import parseDeltaTrade from '@/parsers/parseDeltaTrades'
 
-describe.only('parseDeltaTrade', () => {
+describe('parseDeltaTrade', () => {
   it('parse buy', function () {
     var buy1 = {
       Date: '2018-02-11 18:04:16 +02:00',
