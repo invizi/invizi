@@ -31,9 +31,6 @@ describe('Encrypted Database', function () {
   it('saves new definition then delete', async function () {
     let newAttribute = {'name': 'risk'}
     let definitions = await CoinAttributes.addAttribute(newAttribute)
-    console.log(definitions)
-    console.log(JSON.stringify(definitions.value))
-    console.log(JSON.stringify(_.last(definitions.value)))
     expect(_.isEmpty(definitions)).to.be.equal(false)
     expect(_.isEqual(newAttribute, _.last(definitions.value))).to.be.equal(true)
   })

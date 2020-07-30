@@ -30,9 +30,9 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
           autocomplete>
         </v-select>
       </div>
-      <div class="col-lg-2" style="padding-top: 25px; padding-left: 0;">
+      <div class="col-lg-2" style="padding-top: 25px; padding-left: 0;" id="account-menu">
         <v-menu offset-y>
-          <i slot="activator" class="invizi-info fa fa-ellipsis-v fa-2x" title="Menu"></i>
+          <i slot="activator" class="invizi-info fa fa-ellipsis-v fa-2x" title="Menu" id="account-menu-activator"></i>
           <v-list class="menu-contextual">
             <v-list-tile v-for="(item, index) in items" :key="index" @click="item.onClick">
               <v-list-tile-title><i class="fa" :class="item.iconClass" aria-hidden="true" style="margin-right: 8px"></i>{{ item.title }}</v-list-tile-title>
@@ -54,8 +54,8 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
         <div class="row">
           <div class="offset-8 col-lg-4">
             <div class="text-right" v-show="allBalances && (allBalances.totalUSD >= 0 || allBalances.totalUSD <= 0)">
-              <div class="title-font big-title"> {{allBalances && allBalances.totalUSD | currency}}</div>
-              <h5> <i class="fa fa-btc" aria-hidden="true" style="margin-right: 2px"></i>{{allBalances && allBalances.totalBTC | formatBTC}} </h5>
+              <div class="title-font big-title" id="account-balance-amount"> {{allBalances && allBalances.totalUSD | currency}}</div>
+              <h5 id="account-balance-amount-btc"> <i class="fa fa-btc" aria-hidden="true" style="margin-right: 2px"></i>{{allBalances && allBalances.totalBTC | formatBTC}} </h5>
             </div>
           </div>
           <div class="offset-9 col-lg-3" style="margin-top: 10px;"  v-if="websocketVisible">
@@ -97,7 +97,7 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
       <LogoTitle style="margin-top: 20vh; margin-bottom: 10rem;"/>
       <!--Grid column-->
       <div class="row">
-        <div class="col-lg-4">
+        <div class="col-lg-4" id="account-type">
           <v-select
             v-bind:items="accountTypes"
             v-model="accountType"
@@ -105,11 +105,11 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
             @input="onSelectAccountType()"
             autocomplete
           ></v-select>
-
         </div>
 
         <div class="col-lg-4" v-if="accountType === 'local'">
           <v-text-field
+            id="account-name"
             label="Account Name"
             v-model="newAccountName"
             required
@@ -119,7 +119,7 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
           <div>
             <button type="button" class="btn waves-effect
                           waves-light" @click="cancelNewAccount()" v-if="accounts.length > 0">Cancel</button>
-            <button type="button" class="btn btn-primary waves-effect
+            <button id="create-account" type="button" class="btn btn-primary waves-effect
                           waves-light" @click="saveNewAccount()">Create</button>
           </div>
         </div>
@@ -144,7 +144,7 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
             <a @click="toggleEditOrderHistory(item)" style="margin-right: 10px" v-if="currentAccount && !currentAccount.API_KEY" class="gray">
               <i class="fa fa-edit show-on-hover" aria-hidden="true"></i>
             </a>
-            <a @click="deleteOrderHistory(item)" v-if="currentAccount && !currentAccount.API_KEY" class="gray">
+            <a @click="deleteOrderHistory(item)" v-if="currentAccount && !currentAccount.API_KEY" class="gray" class="delete-order-history">
               <i class="fa fa-times-circle show-on-hover" aria-hidden="true"></i>
             </a>
           </td>
@@ -552,9 +552,6 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
          includeFiat: true}))
        await this.fetchAccounts(this.currentAccountName)
        this.newAccountName = null
-     },
-     csvRemoveRow (index) {
-       console.log(`removing index ${index}`)
      },
      resetNewEntry () {
        this.$refs.form && this.$refs.form.reset()

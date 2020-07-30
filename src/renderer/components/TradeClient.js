@@ -34,7 +34,7 @@ const { ipcRenderer } = require('electron')
 const moment = require('moment')
 const _ = require('lodash')
 const math = require('mathjs')
-const DEBUG_BALANCE = true
+const DEBUG_BALANCE = false
 
 function addToDebug (result, log) {
   if (DEBUG_BALANCE) {
@@ -43,7 +43,7 @@ function addToDebug (result, log) {
   return result
 }
 
-const printDebug = console.log
+const printDebug = DEBUG_BALANCE ? console.log : () => {}
 
 function computeCounterNumber (trades) {
   if (!_.isEmpty(trades)) {
@@ -194,7 +194,7 @@ let TradeClient = {
   loadHistoricalBalance (options) {
     options = options || {}
     return this.all().then((allTrades) => {
-      if (allTrades.length === 0) return []
+      if (allTrades.length === 0) return {coinsInvolved: [], data: []}
       let trades = _.filter(allTrades, (o) => {
         return o.quantity_to > 0 || o.quantity_from > 0
       })

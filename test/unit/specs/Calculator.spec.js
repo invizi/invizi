@@ -28,7 +28,7 @@ describe('Calculator', () => {
   it('calculate the marketcap_volume_ratio', () => {
     var ticker = Ticker.last().data
     var result = Calculator.marketcap_volume_ratio(ticker)
-    var btc = _.find(result, {'symbol': 'btc'})
+    var btc = _.find(result, {coin_id: 'bitcoin'})
     expect(btc['marketcap_volume_ratio']).to.be.above(0.001)
     expect(btc['marketcap_volume_ratio']).to.be.below(0.3)
   })

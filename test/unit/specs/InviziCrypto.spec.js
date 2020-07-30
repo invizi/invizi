@@ -17,25 +17,27 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
 */
 import InviziCrypto from '@/components/InviziCrypto'
 const _ = require('lodash')
-const SALT = InviziCrypto.getSalt()
+const crypto = require('crypto')
+// const SALT = InviziCrypto.getSalt()
 
 describe('InviziCrypto', () => {
   const message = 'In code we trust'
-  const password = 'super$password54'
-  const badPassword = 'mybadpass123#'
-  let key, key2
+  // const password = 'super$password54'
+  // const badPassword = 'mybadpass123#'
+  let key = crypto.randomBytes(32).toString('hex')
+  let key2 = crypto.randomBytes(32).toString('hex')
   const arrString1 = ['message1', 'message2']
   const arrObj1 = [{foo: 'message1', bar: 1}, {foo: 'message2', bar: 2}]
   var isArrayEqual = function (x, y) {
     return _(x).differenceWith(y, _.isEqual).isEmpty()
   }
 
-  it('hashes the password correctly', async () => {
-    key = await InviziCrypto.hashPassword(password, SALT)
-    expect(key.length).to.be.equal(64) // 32 bytes
-    key2 = await InviziCrypto.hashPassword(badPassword, SALT)
-    expect(key.length).to.be.equal(64) // 32 bytes
-  })
+  // it('hashes the password correctly', async () => {
+  //   key = await InviziCrypto.hashPassword(password, SALT)
+  //   expect(key.length).to.be.equal(64) // 32 bytes
+  //   key2 = await InviziCrypto.hashPassword(badPassword, SALT)
+  //   expect(key.length).to.be.equal(64) // 32 bytes
+  // })
 
   it('encrypt - decrypt Strings correctly', () => {
     var ciphertext = InviziCrypto.encryptString(message, key)

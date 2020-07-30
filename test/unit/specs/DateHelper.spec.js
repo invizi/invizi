@@ -31,7 +31,7 @@ describe('DateHelper', () => {
   it('createIntervals', () => {
     var interval1 = DateHelper.createIntervals(1, 'days', moment().subtract(1, 'years').unix())
     expect(_.uniq(interval1).length).to.equal(interval1.length)
-    expect(interval1.length).to.equal(366)
+    expect(interval1.length).to.equal(367)
   })
 
   it('createIntervals Iterator', () => {
@@ -48,7 +48,7 @@ describe('DateHelper', () => {
     })
 
     expect(_.uniq(interval1).length).to.equal(interval1.length)
-    expect(interval1.length).to.equal(366)
+    expect(interval1.length).to.equal(367)
     expect(_.last(interval1).date).to.equal(now)
   })
 

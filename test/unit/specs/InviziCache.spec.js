@@ -80,7 +80,6 @@ describe('InviziCache', () => {
     InviziCache.setItem('dep1', initial)
 
     autorun(() => {
-      console.log(`autorun 1`)
       fromCache = InviziCache.getItem('dep1')
     })
 

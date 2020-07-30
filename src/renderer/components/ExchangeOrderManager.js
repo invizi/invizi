@@ -29,7 +29,6 @@ var ExchangeOrderManager = {
   },
 
   async fetchOrders (exchangeId, symbol) {
-    console.log(`Fetching symbol ${symbol} for exchange ${exchangeId}`)
     let exchange = await ExchangeClientFactory.createWithApi(exchangeId)
     exchange.setMode(MODE)
     let currentExchangeOrders = await exchange.fetchOrders(symbol)

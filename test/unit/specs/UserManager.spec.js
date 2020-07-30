@@ -15,22 +15,22 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
 */
-import UserManager from '@/components/UserManager'
+// import UserManager from '@/components/UserManager'
 
-describe('UserManager', () => {
-  it('logs in', function () {
-    const password = 'myStrongPass1'
-    return UserManager.login(password).then((result) => {
-      expect(UserManager.authenticated).to.be.equal(true)
-      expect(result).to.be.equal(true)
-      return UserManager.login(password).then((result) => {
-        expect(UserManager.authenticated).to.be.equal(true)
-        expect(result).to.be.equal(true)
-        return UserManager.login('falsePass').then((result) => {
-          expect(UserManager.authenticated).to.be.equal(false)
-          return expect(result).to.be.equal(false)
-        })
-      })
-    })
-  })
-})
+// describe('UserManager', () => {
+//   it('logs in', function () {
+//     const password = 'myStrongPass1'
+//     return UserManager.login(password).then((result) => {
+//       expect(UserManager.authenticated).to.be.equal(true)
+//       expect(result).to.be.equal(true)
+//       return UserManager.login(password).then((result) => {
+//         expect(UserManager.authenticated).to.be.equal(true)
+//         expect(result).to.be.equal(true)
+//         return UserManager.login('falsePass').then((result) => {
+//           expect(UserManager.authenticated).to.be.equal(false)
+//           return expect(result).to.be.equal(false)
+//         })
+//       })
+//     })
+//   })
+// })

@@ -24,7 +24,7 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
           <div class="form-row" v-if="!decryptingProgress">
             <v-text-field
               @keyup.enter="login"
-              id="orangeForm-pass"
+              id="password"
               label="Password"
               type="password"
               single-line
@@ -51,7 +51,7 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
           <div class="md-form">
             <v-text-field
               @keyup.enter="newLogin"
-              id="orangeForm-pass"
+              id="new-password"
               label="New Password"
               type="password"
               single-line
@@ -63,7 +63,7 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
           <div class="md-form">
             <v-text-field
               @keyup.enter="newLogin"
-              id="orangeForm-pass"
+              id="confirm-password"
               label="Confirm Password"
               type="password"
               single-line
@@ -73,11 +73,11 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
           </div>
 
           <div class="text-left">
-            <p class="red-text">{{errorMsg}}</p>
+            <p class="red-text" id="error-msg">{{errorMsg}}</p>
           </div>
 
           <div class="text-left" style="display: flex; margin-bottom: 40px;">
-            <button type="button" class="btn btn-primary waves-effect
+            <button id='create-account' type="button" class="btn btn-primary waves-effect
                           waves-light" @click="newLogin()" style="margin-left: 0;">Create Account</button>
           </div>
           <div class="text-left">
@@ -96,6 +96,7 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
   import UserManager from '@/components/UserManager'
   import OnlineAccountClient from '@/models/OnlineAccountClient'
   import LogoTitle from '@/components/LogoTitle'
+  import EventBus from '@/components/EventBus'
 
   export default {
     name: 'settings',
@@ -119,21 +120,6 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
       login () {
         this.decryptingProgress = 30
         UserManager.login(this.password).then((result) => {
-          this.decryptingProgress = 60
-          if (result) {
-            // Check if he has any accounts
-            OnlineAccountClient.all().then((accounts) => {
-              this.decryptingProgress = 100
-              if (accounts && accounts.length > 0) {
-                this.$router.push('main-dashboard')
-              } else {
-                this.$router.push({ path: '/accounts/local1' })
-              }
-            })
-          } else {
-            this.errorMsg = 'Incorrect password'
-            this.decryptingProgress = undefined
-          }
         })
       },
       newLogin () {
@@ -142,7 +128,7 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
           this.password = this.newPassword
           this.login()
         } else {
-          this.errorMsg = 'The two passwords do no match.'
+          this.errorMsg = 'The two passwords do not match.'
         }
       },
       clean () {
@@ -152,6 +138,24 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
     mounted () {
       UserManager.hasPassword().then((result) => {
         this.hasPassword = result
+      })
+
+      EventBus.$once('loggedIn', (authenticated) => {
+        this.decryptingProgress = 60
+        if (authenticated) {
+          // Check if he has any accounts
+          OnlineAccountClient.all().then((accounts) => {
+            this.decryptingProgress = 100
+            if (accounts && accounts.length > 0) {
+              this.$router.push('main-dashboard')
+            } else {
+              this.$router.push({ path: '/accounts/local1' })
+            }
+          })
+        } else {
+          this.errorMsg = 'Incorrect password'
+          this.decryptingProgress = undefined
+        }
       })
     }
   }

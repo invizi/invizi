@@ -159,7 +159,6 @@ class BitfinexExchangeClient extends ExchangeClient {
 
     const fetchData = () => {
       symbolIndex++
-      console.log(`fetching ${markets[symbolIndex]}`)
       return this.getHistoryMovements({currency: markets[symbolIndex]})
     }
 

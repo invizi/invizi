@@ -19,6 +19,7 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
 
 import { app, BrowserWindow, Menu } from 'electron'
 import { autoUpdater } from 'electron-updater'
+import hashPassword from '../crypto/hashPassword'
 const electron = require('electron')
 const ipcMain = electron.ipcMain
 
@@ -79,6 +80,7 @@ function createWindow () {
 
   let workerWindow = new BrowserWindow({
     show: process.env.NODE_ENV === 'development',
+    title: 'Worker',
     webPreferences: {
       nodeIntegration: true
     }
@@ -91,6 +93,14 @@ function createWindow () {
 
   ipcMain.on('worker-response', (event, output) => {
     mainWindow.webContents.send('worker-response', output)
+  })
+
+  ipcMain.on('hashPassword', (_e, output) => {
+    let [password, salt] = output.data
+    salt = Buffer.from(salt)
+    hashPassword(password, salt).then(hashedPassword => {
+      mainWindow.webContents.send('hashPassword', {data: hashedPassword})
+    })
   })
 
   workerWindow.on('closed', () => {
@@ -203,7 +213,6 @@ app.on('activate', () => {
  */
 
 autoUpdater.on('update-downloaded', () => {
-  console.log('update-downloaded')
   autoUpdater.quitAndInstall()
 })
 

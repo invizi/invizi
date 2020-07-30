@@ -34,7 +34,7 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
           @click="dialog = false; context.actions.onCancel()">Cancel</button> 
 
         <button type="button" class="btn btn-primary btn-sm waves-effect
-          waves-light" v-if="context.actions.onConfirm"
+          waves-light confirm" v-if="context.actions.onConfirm"
           @click="dialog = false; context.actions.onConfirm()">Confirm</button> 
       </v-card-actions>
     </v-card>

@@ -19,6 +19,8 @@ import ExchangeClientFactory from '@/components/ExchangeClientFactory'
 
 describe('ExchangeClientFactory', () => {
   it('creates', () => {
-    return expect(/poloniex/.test(ExchangeClientFactory.create('poloniex').wshost)).to.be.equal(true)
+    expect(ExchangeClientFactory.create('binance').exchangeId).to.be.equal('binance')
+    expect(ExchangeClientFactory.create('kraken').exchangeId).to.be.equal('kraken')
+    return expect(ExchangeClientFactory.create('bitfinex').exchangeId).to.be.equal('bitfinex')
   })
 })

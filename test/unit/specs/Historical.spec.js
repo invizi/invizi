@@ -50,7 +50,7 @@ describe('Historical', () => {
   })
 
   it('filterByDate correctly', async function () {
-    this.timeout(10000)
+    this.timeout(20000)
     let coinId = 'bitcoin'
     let data = await Historical.fetchHistorical(coinId)
     let filter1 = Historical.filterByDate(data.price_usd, [])

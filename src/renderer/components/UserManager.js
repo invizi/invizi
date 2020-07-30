@@ -19,10 +19,9 @@ import db from '@/components/Database'
 import InviziCrypto, { DB_ENCODING } from '@/components/InviziCrypto'
 import InviziCache from '@/components/InviziCache'
 import EventBus from '@/components/EventBus'
-import hashPassword from '@/crypto/hashPassword'
+const { ipcRenderer } = require('electron')
 
 const _ = require('lodash')
-const ipcRenderer = require('electron').ipcRenderer
 
 const CHECK_MESSAGE = 'To be, or not to be, that is the question'
 const CHECK_KEY = 'check_v1'
@@ -39,7 +38,7 @@ async function getSalt () {
   return saltBuffer
 }
 
-var UserManager = {
+let UserManager = {
   authenticated: false,
   hashedPassword: undefined,
 
@@ -51,47 +50,51 @@ var UserManager = {
   // @returns: authenticated: boolean
   async login (password) {
     const salt = await getSalt()
-    const hashedPassword = await hashPassword(password, salt)
-
-    let allTradesEncrypted
-    // Encrypt the CHECK_MESSAGE with the user hashedpassword using AES-256
-    // try to decypher the message
-    let result = await db.password.where({key: CHECK_KEY}).toArray()
-
-    if (!result || _.isEmpty(result)) {
-      const cipherMessage = InviziCrypto.encrypt(CHECK_MESSAGE, hashedPassword)
-      // Nothing was encrypted yet, so it's new account, we store the message
-      await db.password.put({key: CHECK_KEY, value: cipherMessage})
-
-      this.authenticated = true
-      this.hashedPassword = hashedPassword // TODO to refactor with same code below
-
-      // Save hashedPassword for worker renderer background process
-      allTradesEncrypted = InviziCache.getItem('TradeClient.trades.toArrayRaw()')
-      ipcRenderer.send('worker-request', {channel: 'logged-in', data: hashedPassword, allTradesEncrypted})
-      EventBus.$emit('loggedIn')
-      return this.authenticated
-    } else {
-      let storedCypherMessage = result[0].value
-      let decipherMessage
-      // decrypt the stored message
-      try {
-        decipherMessage = InviziCrypto.decrypt(storedCypherMessage, hashedPassword)
-      } catch (e) {
-        console.log(e)
-      }
-      this.authenticated = decipherMessage === CHECK_MESSAGE
-
-      if (this.authenticated) {
-        this.hashedPassword = hashedPassword
-        allTradesEncrypted = InviziCache.getItem('TradeClient.trades.toArrayRaw()')
-        // Save hashedPassword for worker renderer background process
-        ipcRenderer.send('worker-request', {channel: 'logged-in', data: hashedPassword, allTradesEncrypted})
-        EventBus.$emit('loggedIn')
-      }
-      return this.authenticated
-    }
+    ipcRenderer.send('hashPassword', {data: [password, salt]})
   }
 }
+
+ipcRenderer.on('hashPassword', async function (_e, output) {
+  if (!output.data) return
+
+  let allTradesEncrypted
+  let hashedPassword = output.data
+
+  let storedPassword = await db.password.where({key: CHECK_KEY}).toArray()
+
+  if (!storedPassword || _.isEmpty(storedPassword)) {
+    // Nothing was encrypted yet, so it's new account, we store the message
+
+    // Encrypt the CHECK_MESSAGE with the user hashedpassword using AES-256
+    const cipherMessage = InviziCrypto.encrypt(CHECK_MESSAGE, hashedPassword)
+    await db.password.put({key: CHECK_KEY, value: cipherMessage})
+
+    UserManager.authenticated = true
+    UserManager.hashedPassword = hashedPassword
+
+    // Save hashedPassword for worker renderer background process
+    allTradesEncrypted = InviziCache.getItem('TradeClient.trades.toArrayRaw()')
+    ipcRenderer.send('worker-request', {channel: 'logged-in', data: hashedPassword, allTradesEncrypted})
+  } else {
+    let storedCypherMessage = storedPassword[0].value
+    let decipherMessage
+    // Decrypt the stored message
+    try {
+      decipherMessage = InviziCrypto.decrypt(storedCypherMessage, hashedPassword)
+    } catch (e) {
+      console.error(e)
+    }
+
+    UserManager.authenticated = decipherMessage === CHECK_MESSAGE
+
+    if (UserManager.authenticated) {
+      UserManager.hashedPassword = hashedPassword
+      allTradesEncrypted = InviziCache.getItem('TradeClient.trades.toArrayRaw()')
+      // Save hashedPassword for worker renderer background process
+      ipcRenderer.send('worker-request', {channel: 'logged-in', data: hashedPassword, allTradesEncrypted})
+    }
+  }
+  EventBus.$emit('loggedIn', UserManager.authenticated)
+})
 
 export default UserManager

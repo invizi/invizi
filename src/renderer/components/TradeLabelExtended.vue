@@ -30,7 +30,7 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
       <i class="fa fa-angle-right light-green-text action-icon" aria-hidden="true"></i><span>Bought</span>
     </div>
     <span v-if="tradeObject">
-      <span v-if="tradeObject.quantity > 0" style="display:inline-block; min-width: 120px;">{{ tradeObject.quantity }}</span>
+      <span class="trade-label-quantity" v-if="tradeObject.quantity > 0" style="display:inline-block; min-width: 120px;">{{ tradeObject.quantity }}</span>
       <coin-image-text :coin-id='tradeObject.quantityUnit' :label="tradeObject.quantityUnit" style="display:inline-block"/>
       <span v-if="tradeObject.price > 0">
         at {{tradeObject.price}}  {{tradeObject.priceUnit}}

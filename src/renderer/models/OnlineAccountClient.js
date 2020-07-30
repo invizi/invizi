@@ -23,7 +23,7 @@ import Ticker from '@/components/Ticker'
 import TradeClient from '@/components/TradeClient'
 import BalanceHelper from '@/components/BalanceHelper'
 import { concat, from, timer } from 'rxjs'
-import { filter, map, tap } from 'rxjs/operators'
+import { filter, map } from 'rxjs/operators'
 const _ = require('lodash')
 
 const EXCHANGE_MAPPING = {
@@ -127,17 +127,10 @@ class OnlineAccountClient extends InviziModel {
     let balanceRemote = await this.loadBalance(account.name)
     let localTrades = await TradeClient.account(account.name)
     let balanceLocal = TradeClient.addTradesToBalance(localTrades)
-    console.log(`balanceLocal`)
-    console.log(balanceLocal)
-
     let balanceDiff = BalanceHelper.diffBalances(balanceRemote, balanceLocal)
-    console.log(`balanceDiff`)
-    console.log(balanceDiff)
     let compensatingTrades = TradeClient.balanceToTrades(balanceDiff, account.name, account.account_type, {fromExchange: true})
-    console.log(`compensatingTrades`)
-    console.log(compensatingTrades)
     // Add the trades in db
-    // await TradeClient.add(compensatingTrades)
+    await TradeClient.add(compensatingTrades)
     return compensatingTrades
   }
 
@@ -152,9 +145,6 @@ class OnlineAccountClient extends InviziModel {
     let currentIter = 1
 
     let load$ = concat(deposits$, timer$, withdrawals$, timer$, allTrades$).pipe(
-      tap(data => {
-        console.log(data)
-      }),
       filter(data => data), // filter timerObs values
       map(result => {
         let tradesFiltered = result.data

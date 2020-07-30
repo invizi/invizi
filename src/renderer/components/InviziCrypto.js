@@ -23,7 +23,7 @@ const TRIPLEDES_KEY_SIZE = 24
 const DETERMINISTIC_ALGO = 'des-ede3-cbc'
 const DB_ENCODING = 'base64'
 
-let ENCRYPT = false
+let ENCRYPT = true
 
 function findType (any) {
   return ['Array', 'Object', 'String', 'Number'].find((type) => _[`is${type}`](any))

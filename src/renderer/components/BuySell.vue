@@ -452,7 +452,6 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
            OnlineAccountClient.loadBalance(account.name).then((balance) => {
              this.allBalances[account.name] = BalanceHelper.allBalances(balance, {removeZero: true, exchange: account.name})
              this.allBalances[account.name].coins = balance
-             console.log(this.allBalances)
            })
          })
        })
@@ -556,7 +555,6 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
            let pair = this.buildPair()
            if (ticker[pair]) {
              let exchange = {name: exchangeId, pair: ticker[pair], ticker: ticker}
-             console.log(exchange)
              let foundIndex = _.findIndex(this.foundExchanges, {name: exchangeId})
              this.foundExchanges.splice(foundIndex, 1, exchange)
            }

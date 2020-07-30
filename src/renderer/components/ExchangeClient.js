@@ -155,13 +155,11 @@ class ExchangeClient {
         this.webSocket = new Ws(this.wshost)
         this.connecting = true
         this.webSocket.on('open', () => {
-          console.log(`Open websocket ${this.exchangeId}`)
           this.connected = true
           this.connecting = false
           resolve(this.webSocket)
         })
         this.webSocket.on('close', () => {
-          console.log(`Closing websocket ${this.exchangeId}`)
           this.connecting = false
           this.connected = false
         })
@@ -533,7 +531,6 @@ class ExchangeClient {
   }
 
   fetchDeposits (apiKey, since, requestParams) {
-    console.log(`fetchDeposits ${moment(since, 'X').toString()}.`)
     this.initializeApiKey(apiKey)
     return this.ccxt.fetchDeposits(undefined, since * 1000, undefined, requestParams).then((trades) => {
       return this.parseDeposits(trades)
@@ -541,7 +538,6 @@ class ExchangeClient {
   }
 
   fetchWithdrawals (apiKey, since, requestParams) {
-    // console.log(`fetchWithdrawals ${moment(since, 'X').toString()}.`)
     this.initializeApiKey(apiKey)
     return this.ccxt.fetchWithdrawals(undefined, since * 1000, undefined, requestParams).then((trades) => {
       return this.parseWithdrawals(trades)
