@@ -21,7 +21,7 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
     <div class="tabs--menu">
       <ul class="nav" style="" :class="{'fit-title-container': fit}">
         <li v-for="(compo, index) in comps" :class="{active: selected === index, 'fit-title': fit}">
-          <a class="nav-link waves-light waves-effect waves-light"
+          <a class="nav-link waves-light waves-effect waves-light" :id="`tab-${compo.id}`"
              role="tab" @click="onSelect(compo, index)"
              aria-expanded="true">{{compo.title}}</a>
         </li>

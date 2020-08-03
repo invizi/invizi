@@ -6,7 +6,7 @@
         <div class="row">
           <div class="progress stylish-color" v-if="!hideLoadingHistorical"> <div class="indeterminate"></div> </div>
           <div class="col-lg-8" id="historic" style="padding-left: 0; padding-right: 0;"></div>
-          <div class="col-lg-4" id="historicSlicePie" style=""></div>
+          <div class="col-lg-4" id="historic-slice-pie" style=""></div>
         </div>
       </div>
 
@@ -68,7 +68,7 @@
          InviziPlot.historicalUsdBtcLayout)
 
        function plotHistoricalPie (dateIndex) {
-         let pieElementId = 'historicSlicePie'
+         let pieElementId = 'historic-slice-pie'
          let currentBalance = BalanceHelper.removeZeroCoins(newHistoricalData.balanceHistorical.raw.data[1][dateIndex])
          if (_.isEmpty(currentBalance)) return
 

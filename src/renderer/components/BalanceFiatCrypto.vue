@@ -70,7 +70,6 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
        let discriminator = (key) => {
          return Forex.isStableCoinOrFiat(key) ? 'fiat' : 'crypto'
        }
-       console.log(this.balanceUsd)
        return BalanceHelper.balanceKeyDiscriminator(this.balanceUsd, discriminator)
      }
    },

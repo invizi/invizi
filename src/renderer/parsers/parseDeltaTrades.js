@@ -76,8 +76,6 @@ const toInviziReducer = (acc, trade) => {
   let result1 = {}
   let result2 = {}
 
-  // let keyQuantityMapping = ['quantity_to', 'quantity_from', 'fee']
-
   if (trade['Type'] === 'BUY') {
     result.quantity_to = parseFloat(trade['Base amount'])
     result.to = baseCurrency
@@ -95,7 +93,7 @@ const toInviziReducer = (acc, trade) => {
     result.to = baseCurrency
     result.quantity_from = 0
   } else if (trade['Type'] === 'TRANSFER') {
-    // Transfer is actually 2 transaction, a withdraw and a deposit
+    // Transfer is actually 2 transactions, a withdraw and a deposit
     result1.quantity_from = parseFloat(trade['Base amount'])
     result1.from = baseCurrency
     result1.account_name = trade['Sent/Received from']

@@ -28,7 +28,6 @@ let Importer = {
           result.push(data)
         })
         .on('end', function () {
-          console.log('Import csv done')
           resolve(result)
         })
     })

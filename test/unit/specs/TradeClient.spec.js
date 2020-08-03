@@ -90,6 +90,7 @@ describe('TradeClient', () => {
 
   it('loadHistoricalBalance with 0 trades', async function () {
     let result = await TradeClient.loadHistoricalBalance()
+    expect(result.coinsInvolved.length).to.be.equal(0)
     expect(result.data.length).to.be.equal(0)
   })
 
@@ -335,15 +336,18 @@ describe('TradeClient', () => {
   })
 
   it('calculate performance', function () {
-    var fullDates = DateHelper.createIntervals(1, 'days', moment().subtract(2, 'years').unix())
-    var datesValues = fullDates.map(function (o, i) {
-      return i
-    })
+    var fullDates = DateHelper.createIntervals(1, 'days', moment().subtract(4, 'years').unix())
+    // Each day we simply increment the value so we can easily verify the calculation at the end
+    var datesValues = fullDates.map((_, i) => i)
     var data = [fullDates, datesValues]
     var performance = TradeClient.performance(data)
-    expect(performance['24_hours']).to.be.equal((730 - 729) / 729)
-    expect(performance['7_days']).to.be.equal((730 - 723) / 723)
-    expect(performance['30_days']).to.be.equal((730 - 700) / 700)
+    const todaysValue = 4 * 365 + 1 // 1 for leap year
+    const yesterdaysValue = todaysValue - 1
+    const lastWeeksValue = todaysValue - 7
+    const lastMonthsValue = todaysValue - 30
+    expect(performance['24_hours']).to.be.equal((todaysValue - yesterdaysValue) / yesterdaysValue)
+    expect(performance['7_days']).to.be.equal((todaysValue - lastWeeksValue) / lastWeeksValue)
+    expect(performance['30_days']).to.be.equal((todaysValue - lastMonthsValue) / lastMonthsValue)
   })
 
   it('calculate performance with missing dates - 3 days', function () {

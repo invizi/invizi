@@ -115,7 +115,7 @@ let BalanceHelper = {
   // @dates: [1368650101, 1369341302]
   // @reverse: convert from BTC to USD
   // TODO : check both are array
-  balanceUSDtoBTCHistorical: function (listBalanceUSD, dates, reverse) {
+  balanceUSDtoBTCHistorical (listBalanceUSD, dates, reverse) {
     if (!_.isArray(dates) || !_.isArray(listBalanceUSD) || listBalanceUSD.length !== dates.length) {
       throw new Error('Incorrect arguments')
     }
@@ -133,18 +133,6 @@ let BalanceHelper = {
         })
         result.push(convertedBalance)
       })
-      let latestBtcPrice = Ticker.coinById('bitcoin').price_usd
-      // The last entry need to be updated with latest price
-      let lastBalance = _.mapValues(_.last(listBalanceUSD), (usdValue) => {
-        var computed
-        if (reverse) {
-          computed = math.number(math.multiply(math.bignumber(usdValue), math.bignumber(latestBtcPrice)))
-        } else {
-          computed = math.number(math.divide(math.bignumber(usdValue), math.bignumber(latestBtcPrice)))
-        }
-        return computed
-      })
-      result[result.length - 1] = lastBalance
       return result
     })
   },

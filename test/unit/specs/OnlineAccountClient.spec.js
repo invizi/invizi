@@ -68,6 +68,14 @@ describe('OnlineAccountClient', () => {
       })
     })
   })
+})
+
+describe('OnlineAccountClient - loadBalance', () => {
+  afterEach(async () => {
+    await TradeClient.deleteAll()
+    OnlineAccountClient.loadBalance.restore()
+    sinon.restore()
+  })
 
   it('matchBalanceWithTrades - Case remote account has coin local account does not have', async function () {
     //
@@ -84,9 +92,6 @@ describe('OnlineAccountClient', () => {
     localTrades = await TradeClient.account('binance')
     let newLocalBalance = TradeClient.addTradesToBalance(localTrades)
     expect(newLocalBalance).to.eql(remoteBalance)
-
-    await TradeClient.deleteAll()
-    sinon.restore()
   })
 
   it('matchBalanceWithTrades - Case local has coin remote account does not have anymore ', async function () {
@@ -102,8 +107,5 @@ describe('OnlineAccountClient', () => {
     let localTrades = await TradeClient.account('binance')
     let newLocalBalance = TradeClient.addTradesToBalance(localTrades)
     expect(newLocalBalance).to.eql(remoteBalance)
-
-    await TradeClient.deleteAll()
-    sinon.restore()
   })
 })

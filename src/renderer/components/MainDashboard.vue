@@ -84,7 +84,6 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
   import TradeClient from '@/components/TradeClient'
   import EventBus from '@/components/EventBus'
   import Settings from '@/components/Settings'
-  import Performance from '@/components/Performance'
   import Ticker from '@/components/Ticker'
   import Forex from '@/components/Forex'
   import InviziPlot from '@/components/InviziPlot'
@@ -117,7 +116,6 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
         loading: true,
         comps: [Historical, BalanceByCoin, BalanceByExchange, BalanceFiatCrypto, BalanceLocalOnline, HistoricalPerformanceTable],
         inviziApp: window.inviziApp,
-        avg: {},
         ticker: [],
         altCurrencyIconClass: null,
         balance: {},
@@ -133,14 +131,7 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
       }
     },
     methods: {
-      allTimePerf () {
-        TradeClient.all().then(trades => {
-          let filteredTrades = trades.filter(trade => !Forex.isFiat(trade.to))
-          this.avg = Performance.averageBuyingPriceAll(filteredTrades)
-        })
-      },
       fetch () {
-        performance.mark('fetch start')
         TradeClient.loadBalance().then((balance) => {
           this.balance = BalanceHelper.removeNegative(balance)
           this.allBalances = BalanceHelper.allBalances(this.balance, {removeZero: true})
@@ -188,9 +179,6 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
       hasTrades () {
         return Object.keys(this.balance).length > 0
       },
-      perfData () { // TOREMOVE
-        return Performance.calc(this.avg, this.tickerData)
-      },
       tickerData () {
         let result = {}
         if (this.allBalances && this.allBalances.BTC) {
@@ -210,7 +198,6 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
     mounted () {
       this.fetch()
       let forex = Forex.last()
-      this.allTimePerf()
       this.altCurrency = Settings.get('alternateCurrency')
       if (this.altCurrency) {
         this.altCurrencyMultiplier = forex.rates[this.altCurrency]

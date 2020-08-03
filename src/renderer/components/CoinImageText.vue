@@ -18,7 +18,7 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
 <template>
   <div style="text-align: left;">
     <coin-image :coin-id='this.coinId' class="coinImageText"/>
-    <span>{{this.label}}</span>
+    <span class="coin-image-label">{{this.label}}</span>
   </div>
 </template>
 

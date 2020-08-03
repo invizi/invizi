@@ -390,7 +390,6 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
         this.onIndexSelect()
       })
 
-      console.log(this.coins)
       this.plotPie('coins-pie', this.coins)
     }
   }

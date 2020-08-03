@@ -40,7 +40,6 @@ describe('parseDeltaTrade', () => {
     }
     let trades = [buy1]
     let parsed = parseDeltaTrade(trades)
-    console.log(parsed)
     return expect(parsed.length).to.equal(1)
   })
 })

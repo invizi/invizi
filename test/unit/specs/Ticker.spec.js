@@ -26,6 +26,7 @@ describe('Ticker', () => {
     UserManager.hashedPassword = sha256('myPassword').toString()
     done()
   })
+
   it('fetches the live ticker', function () {
     this.timeout(20000)
     return Ticker.get().then((value) => {
@@ -34,44 +35,48 @@ describe('Ticker', () => {
       return expect(_.find(value.data, {coin_id: 'bitcoin'}).price_btc).to.equal(1)
     })
   })
+
   it('gets all the coins', function () {
     var result = Ticker.allCoins()
     expect(!!_.find(result, {coin_id: 'bitcoin'})).to.be.equal(true)
   })
+
   it('gets all the coins incuding fiat', function () {
     var result = Ticker.allCoins({includeFiat: true})
-    expect(!!_.find(result, {symbol: 'USD'})).to.be.equal(true)
+    expect(!!_.find(result, {coin_id: 'usd'})).to.be.equal(true)
   })
+
   it('fills in id and name of coins without conflict of symbols', function () {
     this.timeout(10000)
     let exchangeTickers = [
       {
-        symbol: 'BTC',
-        price_usd: '8915.22',
-        price_btc: '1'
+        coin_id: 'bitcoin',
+        price_usd: 8915.22,
+        price_btc: 1
       },
       {
-        symbol: 'ETH',
-        price_usd: '895.954',
-        price_btc: '0.1014'
+        coin_id: 'ethereum',
+        price_usd: 895.954,
+        price_btc: 0.1014
       }
-
     ]
 
     Ticker.fillIdAndName(exchangeTickers)
-    let btcTicker = _.find(exchangeTickers, {symbol: 'BTC'})
-    expect(btcTicker.coin_id === 'bitcoin').to.be.equal(true)
+    let btcTicker = _.find(exchangeTickers, {coin_id: 'bitcoin'})
     expect(btcTicker.name === 'Bitcoin').to.be.equal(true)
   })
+
   it('fills in id and name of coins with conflict of symbols', function () {
     this.timeout(10000)
     let exchangeTickers = [
       {
+        coin_id: 'bitcoin',
         symbol: 'BTC',
         price_usd: '8915.22',
         price_btc: '1'
       },
       {
+        coin_id: 'ethereum',
         symbol: 'ETH',
         price_usd: '895.954',
         price_btc: '0.1014'

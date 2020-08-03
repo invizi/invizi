@@ -1,74 +1,36 @@
 import utils from '../utils'
 
-describe('Launch', function () {
-  beforeEach(utils.beforeEach)
-  afterEach(utils.afterEach)
-
-  it('shows the proper application title', function () {
-    this.timeout(30000)
-    return this.app.client.windowHandles()
-      .then((handles) => {
-        console.log(handles)
-        const windowA = handles.value[0]
-        const windowB = handles.value[1]
-        console.log(windowA)
-        console.log(windowB)
-        this.app.client.window(windowB)
-        // app.client.window(windowB)
-
-        return this.app.client.getText('#elem')
-          .then(titles => {
-            console.log(titles)
-            expect(titles).to.equal('Lorem')
-          })
-        // return this.app.client.getTitle()
-        //   .then(title => {
-        //     console.log(title)
-        //     expect(title).to.equal('electron-vue')
-        //   })
-      })
+describe.only('Creating a new account with different passwords', function () {
+  let app
+  beforeEach(async () => {
+    app = await utils.launchApp()
   })
 
-  // it('get the text', function () {
-  //   return this.app.client.getText('.title')
-  //     .then(titles => {
-  //       console.log(titles)
-  //       expect(titles[0]).to.equal('Welcome to your new project!')
-  //     })
-  // })
+  afterEach(async () => {
+    await utils.stopApp(app)
+  })
 
-  // it('tests the title', function () {
-  //   this.app.client.$('span').then(function (elem) {
-  //     console.log(elem)
-  //     console.log(elem.getText())
-  //     return expect(elem).to.equal(true)
-  //   })
-  // })
+  // before(utils.launchApp)
+  // after(utils.stopApp)
+  it('displays correctly', async function () {
+    this.timeout(10000)
+    const browser = app.client
+    // New password and Confirm password fields should be there
+    await browser.waitForVisible('#new-password', 5000)
+    let confirmPasswordEls = await browser.$('#confirm-password')
+    expect(!!confirmPasswordEls.value).to.equal(true)
 
-  // it('does not have the developer tools open', async () => {
-  //   const devToolsAreOpen = await this.app.client.waitUntilWindowLoaded().browserWindow.isDevToolsOpened()
-  //   return assert.equal(devToolsAreOpen, false)
-  // })
-
-  // it('opens a window', function () {
-  // this.app.client.waitUntilTextExists('#elem', 'Lorem2', 30000)
-  // this.app.client.waitUntilWindowLoaded(30000)
-
-  // return this.app.client.getText('').then(function (text) {
-  //   console.log('The #license-key-label content is ' + text)
-  //   expect(text).to.equal('Lorem')
-  // })
-  // })
-  // it('shows the proper application title', function () {
-  //   waitUntilWindowLoaded
-  //   return this.app.client.getText('#elem').then(function (text) {
-  //     console.log('The #license-key-label content is ' + text)
-  //     expect().to.equal('Lorem')
-  //   })
-  //   // return this.app.client.getTitle()
-  //   //   .then(title => {
-  //   //     console.log(title)
-  //   //     expect(title).to.equal('Invizi')
-  //   //   })
-  // })
+    // Single password field should not be there
+    let passwordEls = await browser.$$('#password')
+    expect(passwordEls.length).to.equal(0)
+    const confirmPassword = 'myPassword345'
+    await browser.setValue('#new-password', 'myPassword123')
+    await browser.setValue('#confirm-password', confirmPassword)
+    browser.click('#create-account')
+    const notMatchingError = await browser.getText('#error-msg')
+    expect(/do not match/.test(notMatchingError)).to.equal(true)
+    // Navigation menu should not be visible
+    // Click Create Account should display an error
+    // Fill the fields with different passwords should display an error
+  })
 })

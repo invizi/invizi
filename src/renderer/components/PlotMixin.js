@@ -42,7 +42,6 @@ let mixin = {
       let el = document.getElementById(elementId)
       if (!el) return
       let placeholderWidth = el.offsetWidth
-      console.log(`placeholderWidth=${placeholderWidth}`)
       let layout = Object.assign({}, InviziPlot.pieLayout, {
         width: placeholderWidth,
         height: placeholderWidth

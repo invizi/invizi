@@ -35,6 +35,7 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
           <div class="md-form">
             <v-text-field
               label="Quantity"
+              id="quantity"
               v-model.number="newEntry.quantity"
               v-decimal-numbers
               required
@@ -47,6 +48,7 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
         <!--Grid column : ADD COINS-->
         <div class="col-lg-3 col-md-3">
           <v-select
+            id="coins"
             v-bind:items="symbols"
             v-model="newEntry.coin"
             label="Coin/Currency"
@@ -58,13 +60,13 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
             :rules="coinRules"
           >
             <template slot="item" slot-scope="data">
-              <v-list-tile-avatar>
+              <v-list-tile-avatar class="select-coin-image">
 
                 <coin-image :coin-id='data.item.coin_id'/>
                 <span style="margin-left: 8px; font-size: 32px"
                       v-if="data.item.iconText">{{data.item.iconText}}</span>
               </v-list-tile-avatar>
-              <v-list-tile-content>
+              <v-list-tile-content class="select-coin-text">
                 <v-list-tile-title v-html="data.item.name"></v-list-tile-title>
               </v-list-tile-content>
             </template>
@@ -86,6 +88,7 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
             max-width="390px"
           >
             <v-text-field
+              id="trade-date"
               slot="activator"
               :label="tradeType + ' on'"
               autosave="true"
@@ -181,8 +184,7 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
         </div>
         <div class="col-lg-2">
           <!--Grid column-->
-          <button type="button" class="btn btn-primary waves-effect
-                        waves-light" @click="save()" :disabled="!valid">Save</button>
+          <button type="button" class="btn btn-primary waves-effect waves-light" id="save" @click="save()" :disabled="!valid">Save</button>
         </div>
       </div>
     </v-form>

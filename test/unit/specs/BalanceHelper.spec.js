@@ -27,11 +27,10 @@ describe('BalanceHelper', () => {
     return expect(BalanceHelper.balanceUSD(balance)).to.be.undefined
   })
 
-  it('fetches the live ticker first', function () {
+  it('fetches the live ticker first', async function () {
     this.timeout(10000)
-    return Ticker.get().then((value) => {
-      return expect(_.find(value.data, {symbol: 'btc'}).price_btc).to.equal(1)
-    })
+    let ticker = await Ticker.get()
+    expect(_.find(ticker.data, {coin_id: 'bitcoin'}).price_btc).to.equal(1)
   })
 
   it('merges 2 accounts balances', () => {
@@ -162,20 +161,13 @@ describe('BalanceHelper', () => {
     const balance1 = {bitcoin: 2, ethereum: 1, dash: 3}
     const balance2 = {bitcoin: 1, ethereum: 3}
     let result = BalanceHelper.diffBalances(balance1, balance2)
-    console.log(balance1)
     expect(_.isEqual(result, {bitcoin: 1, ethereum: -2, dash: 3})).to.equal(true)
     let adds = BalanceHelper.mergeAccounts(balance2, result)
-    console.log(adds)
-    console.log(balance1)
     expect(_.isEqual(adds, balance1)).to.equal(true)
 
     result = BalanceHelper.diffBalances(balance2, balance1)
-    console.log(result)
     expect(_.isEqual(result, {bitcoin: -1, ethereum: 2, dash: -3})).to.equal(true)
-    console.log(balance1)
-    console.log(balance2)
     result = BalanceHelper.mergeAccounts(balance1, result)
-    console.log(result)
     expect(_.isEqual(result, balance2)).to.equal(true)
   })
 })

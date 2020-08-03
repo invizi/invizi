@@ -276,7 +276,6 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
      let account = await OnlineAccountClient.load(this.account.name)
      if (account) {
        this.accountApiSetup = account && account.API_KEY
-       console.log(this.account)
        let exchange = ExchangeClientFactory.create(account.name)
        if (exchange && exchange.idToSymbolMap) {
          this.markets = Object.values(exchange.idToSymbolMap)
