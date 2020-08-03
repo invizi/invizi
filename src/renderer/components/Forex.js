@@ -113,7 +113,7 @@ var Forex = {
   isStableCoinOrFiat (coinId) {
     if (!coinId) return false
 
-    let stable = this.symbolsWithUSD().map(currency => currency.toLowerCase).concat(STABLE_COINS)
+    let stable = this.symbolsWithUSD().map(currency => currency.toLowerCase()).concat(STABLE_COINS)
     return stable.includes(coinId)
   },
 
