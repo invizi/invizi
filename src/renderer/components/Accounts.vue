@@ -144,7 +144,7 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
             <a @click="toggleEditOrderHistory(item)" style="margin-right: 10px" v-if="currentAccount && !currentAccount.API_KEY" class="gray">
               <i class="fa fa-edit show-on-hover" aria-hidden="true"></i>
             </a>
-            <a @click="deleteOrderHistory(item)" v-if="currentAccount && !currentAccount.API_KEY" class="gray" class="delete-order-history">
+            <a @click="deleteOrderHistory(item)" v-if="currentAccount && !currentAccount.API_KEY" class="gray delete-order-history">
               <i class="fa fa-times-circle show-on-hover" aria-hidden="true"></i>
             </a>
           </td>
