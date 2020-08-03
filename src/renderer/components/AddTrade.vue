@@ -123,11 +123,28 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
         <div class="col-md-3" v-if="['Bought', 'Sold'].indexOf(tradeType) >= 0">
 
           <v-select
-            v-bind:items="currencies"
+            :items="currencies"
+            item-text="name"
+            label="Base Currency"
+            item-value="coin_id"
             v-model="newEntry.currency"
             @select="onCurrencySelect"
             autocomplete
-          ></v-select>
+          >
+            <template slot="item" slot-scope="data">
+              <v-list-tile-avatar>
+
+                <coin-image :coin-id='data.item.coin_id'/>
+                <span style="margin-left: 8px; font-size: 32px"
+                      v-if="data.item.iconText">{{data.item.iconText}}</span>
+              </v-list-tile-avatar>
+              <v-list-tile-content>
+                <v-list-tile-title v-html="data.item.name"></v-list-tile-title>
+              </v-list-tile-content>
+            </template>
+          </v-select>
+
+          </v-select>
         </div>
         <div class="col-md-3">
           <div class="md-form">
@@ -147,8 +164,20 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
             item-value="coin_id"
             v-model="newEntry.fee_currency"
             label="Fee Coin"
-            disabled
-          ></v-select>
+            autocomplete
+          >
+            <template slot="item" slot-scope="data">
+              <v-list-tile-avatar>
+
+                <coin-image :coin-id='data.item.coin_id'/>
+                <span style="margin-left: 8px; font-size: 32px"
+                      v-if="data.item.iconText">{{data.item.iconText}}</span>
+              </v-list-tile-avatar>
+              <v-list-tile-content>
+                <v-list-tile-title v-html="data.item.name"></v-list-tile-title>
+              </v-list-tile-content>
+            </template>
+          </v-select>
         </div>
         <div class="col-lg-2">
           <!--Grid column-->
@@ -200,7 +229,7 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
        currentNewEntryCoin: null,
        symbols: [],
        menu: false,
-       currencies: ['usd', 'bitcoin', 'ethereum'],
+       currencies: [],
        tradeType: 'Deposited'
      }
    },
@@ -277,15 +306,20 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
    watch: {
      accountName (newAccountName) {
        Ticker.fillFromIdAsync(Ticker.allCoins({ // TODO optimize
-         exchange: this.newAccountName, includeFiat: true})).then(symbols => { this.symbols = symbols })
+         exchange: this.newAccountName, includeFiat: true})).then(symbols => { console.log(`helo`); console.log(symbols); this.symbols = symbols })
+     },
+     symbols (newSymbols) {
+       let majorCoins = newSymbols.filter(coin => ['bitcoin', 'ethereum', 'tether', 'usd-coin', 'dai'].includes(coin.coin_id))
+       this.currencies = this.currencies.concat(majorCoins).concat(newSymbols).concat(Forex.fillName(Forex.symbols()))
      }
    },
    mounted () {
      if (this.accountName) {
        Ticker.fillFromIdAsync(Ticker.allCoins({ // TODO optimize
-         exchange: this.accountName, includeFiat: true})).then(symbols => { this.symbols = symbols })
+         exchange: this.accountName, includeFiat: true})).then(symbols => { console.log(`helo2`); console.log(symbols); this.symbols = symbols })
      }
-     this.currencies = this.currencies.concat(Forex.symbols())
+     let initialCurrencies = Forex.fillName(['usd', 'eur'])
+     this.currencies = initialCurrencies
    }
  }
 </script>

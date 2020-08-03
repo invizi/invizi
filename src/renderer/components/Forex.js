@@ -21,11 +21,48 @@ import axios from '@/utils/InviziAxios'
 const _ = require('lodash')
 const USE_LOCAL_URL = false
 
-const STATIC_SYMBOLS = [
-  'AUD', 'BGN', 'BRL', 'CAD', 'CHF', 'CNY', 'CZK', 'DKK', 'EUR', 'GBP',
-  'HKD', 'HRK', 'HUF', 'IDR', 'ILS', 'INR', 'ISK', 'JPY', 'KRW', 'MXN',
-  'MYR', 'NOK', 'NZD', 'PHP', 'PLN', 'RON', 'RUB', 'SEK', 'SGD', 'THB',
-  'TRY', 'ZAR']
+// const STATIC_SYMBOLS = [
+//   'AUD', 'BGN', 'BRL', 'CAD', 'CHF', 'CNY', 'CZK', 'DKK', 'EUR', 'GBP',
+//   'HKD', 'HRK', 'HUF', 'IDR', 'ILS', 'INR', 'ISK', 'JPY', 'KRW', 'MXN',
+//   'MYR', 'NOK', 'NZD', 'PHP', 'PLN', 'RON', 'RUB', 'SEK', 'SGD', 'THB',
+//   'TRY', 'ZAR']
+
+const SYMBOLS = {
+  AUD: {name: 'Australian Dollar'},
+  BGN: {name: 'Bulgarian Lev'},
+  BRL: {name: 'Brazilian Real'},
+  CAD: {name: 'Canadian Dollar'},
+  CHF: {name: 'Swiss Franc'},
+  CNY: {name: 'Yuan'},
+  CZK: {name: 'Czech Koruna'},
+  DKK: {name: 'Danish Krone'},
+  EUR: {name: 'Euro'},
+  GBP: {name: 'Pound Sterling'},
+  HKD: {name: 'Hong Kong Dollar'},
+  HRK: {name: 'Croatian Kuna'},
+  HUF: {name: 'Hungarian Forint'},
+  IDR: {name: 'Indonesian Rupiah'},
+  ILS: {name: 'Israeli Shekel'},
+  INR: {name: 'Indian Rupee'},
+  ISK: {name: 'Icelandic Króna'},
+  JPY: {name: 'Japanese Yen'},
+  KRW: {name: 'Korean Won'},
+  MXN: {name: 'Mexican Peso'},
+  MYR: {name: 'Malaysian Ringgit'},
+  NOK: {name: 'Norwegian Krone'},
+  NZD: {name: 'New Zealand dollar'},
+  PHP: {name: 'Philippine Peso'},
+  PLN: {name: 'Polish Zloty'},
+  RON: {name: 'Romanian Leu'},
+  RUB: {name: 'Russian ruble'},
+  SEK: {name: 'Swedish krona'},
+  SGD: {name: 'Singapore Dollar'},
+  THB: {name: 'Thai Baht'},
+  TRY: {name: 'Turkish Lira'},
+  ZAR: {name: 'South African rand'}
+}
+
+const STATIC_SYMBOLS = Object.keys(SYMBOLS)
 
 const ROOT_URL = USE_LOCAL_URL ? 'http://0.0.0.0:5000' : 'https://apif.invizi.co'
 const END_POINT = `${ROOT_URL}/forex`
@@ -59,6 +96,18 @@ var Forex = {
 
   symbolsWithUSD () {
     return ['USD'].concat(this.symbols())
+  },
+
+  // @param {array} currencies - Array of symbols strings
+  fillName (currencies) {
+    return currencies.map(c => {
+      let name = (SYMBOLS[c.toUpperCase()] && SYMBOLS[c.toUpperCase()].name) || c.toUpperCase()
+      return {name, coin_id: c.toLowerCase(), symbol: c.toUpperCase()}
+    })
+  },
+
+  symbolsAsObject () {
+    return this.fillName(this.symbolsWithUSD())
   },
 
   isStableCoinOrFiat (coinId) {

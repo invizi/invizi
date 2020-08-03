@@ -17,12 +17,18 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
 -->
 <template>
   <img :src="`static/images/coins2/${this.coinId}.png`" class="coinImage" :alt="this.coinId" onerror="this.src='static/images/empty.png';this.className += ' transparent-image'"
-  v-if="this.coinId" :class="{'small': small}"/>
+  v-if="this.coinId" :class="{'small': small, 'fiat': isFiat}"/>
 </template>
 
 <script>
+  import Forex from '@/components/Forex'
   export default {
-    props: ['coinId', 'small']
+    props: ['coinId', 'small'],
+    computed: {
+      isFiat () {
+        return Forex.isFiat(this.coinId)
+      }
+    }
   }
 </script>
 
@@ -31,6 +37,10 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
    width: 32px;
    height: 32px;
    filter: sepia(100%) hue-rotate(160deg) saturate(120%);
+ }
+
+ img.fiat {
+   filter: invert(1);
  }
 
  .transparent-image {

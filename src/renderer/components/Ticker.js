@@ -18,6 +18,7 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
 import InviziCache from '@/components/InviziCache'
 import EventBus from '@/components/EventBus'
 import axios from '@/utils/InviziAxios'
+import Forex from '@/components/Forex'
 const _ = require('lodash')
 const moment = require('moment')
 const math = require('mathjs')
@@ -169,9 +170,8 @@ let Ticker = {
       return Object.assign({}, o, {name: `${o.symbol} ${o.name}`})
     })
     if (options && options.includeFiat) {
-      result.push({ name: 'USD Dollar', symbol: 'usd', iconText: `$`, coin_id: 'usd' })
+      result = result.concat(Forex.symbolsAsObject())
     }
-    performance.mark('Ticker.allCoins end')
     return result
   },
 
