@@ -66,8 +66,9 @@ var DataSynchronizer = {
     console.log('DataSynchronizer.start')
     // Get list of exchanges to synchronize
     Forex.get({persistent: true})
+    InviziTimer.repeat(Forex.get, 900000, Ticker) // Fetch every 15 min
     await Ticker.get({persistent: true})
-    InviziTimer.repeat(Ticker.get, 30000, Ticker)
+    InviziTimer.repeat(Ticker.get, 30000, Ticker) // Fetch every 30 s
     let exchanges = await this.userExchanges()
     let tickersPromises = []
     for (let exchangeId of exchanges) {
