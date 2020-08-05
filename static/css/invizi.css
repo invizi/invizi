@@ -301,3 +301,7 @@ input[type="radio"]:focus {
 .input-group__input .input-group__append-icon:not(:hover) {
   color: var(--gray);
 }
+
+.blurred {
+  filter: url(#blur);
+}

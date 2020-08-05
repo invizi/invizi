@@ -22,7 +22,7 @@ const math = require('mathjs')
 
 const _ = require('lodash')
 
-var Performance = {
+let Performance = {
   /**
    * Returns a all time performance from a list of trades
    * @param {array} allTrades list of standard trades

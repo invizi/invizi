@@ -23,7 +23,7 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
     <div id="omni-dialog-attach"> </div>
     <!--Main Navigation-->
     <header style="z-index: 9999">
-      <div class="" style="background-color: white; margin-top:60px;margin-bottom: -60px;">
+      <div style="background-color: white; margin-top:60px;margin-bottom: -60px;">
         <v-dialog v-model="dialog3" max-width="700px" attach="#omni-dialog-attach">
           <div class="omnisearch" @keyup.esc="dialog3 = false">
             <div>
@@ -54,6 +54,14 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
         <router-view></router-view>
       </div>
     </main>
+    <!--Used to apply blur filter to some svg on loading -->
+    <svg>
+      <defs>
+        <filter id="blur">
+          <feGaussianBlur stdDeviation="5" />
+        </filter>
+      </defs>
+    </svg>
     </v-app>
   </div>
 </template>
@@ -395,5 +403,9 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
 
    .input-group__input input[type=text] {
      text-align: right;
+   }
+
+   .blurred {
+     filter: url(#blur);
    }
   </style>

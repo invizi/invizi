@@ -4,8 +4,7 @@
 
       <div class="">
         <div class="row">
-          <div class="progress stylish-color" v-if="!hideLoadingHistorical"> <div class="indeterminate"></div> </div>
-          <div class="col-lg-8" id="historic" style="padding-left: 0; padding-right: 0;"></div>
+          <div class="col-lg-8" :class="{blurred: loading}" id="historic" style="padding-left: 0; padding-right: 0;"></div>
           <div class="col-lg-4" id="historic-slice-pie" style=""></div>
         </div>
       </div>
@@ -19,16 +18,19 @@
  import InviziPlot from '@/components/InviziPlot'
  import Settings from '@/components/Settings'
  import BalanceHelper from '@/components/BalanceHelper'
+ import FAKE_HISTORICAL_DATA from '../../data/fakeHistoricalData'
  const { ipcRenderer } = require('electron')
  const _ = require('lodash')
  const moment = require('moment')
+
+ FAKE_HISTORICAL_DATA.fake = true
 
  export default {
    title: 'Historical',
    id: 'historical',
    data () {
      return {
-       hideLoadingHistorical: false,
+       loading: true,
        historicalData: null
      }
    },
@@ -96,7 +98,10 @@
          let currentIndex = clickData.points[0].pointIndex
          plotHistoricalPie(currentIndex)
        })
-       this.hideLoadingHistorical = true
+
+       if (!newHistoricalData.fake) {
+         this.loading = false
+       }
      }
    },
    mounted () {
@@ -109,6 +114,7 @@
      } else {
        ipcRenderer.send('worker-request', {channel: 'compute-historical'})
      }
+     this.historicalData = FAKE_HISTORICAL_DATA
    }
  }
 </script>
