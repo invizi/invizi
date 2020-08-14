@@ -12,22 +12,40 @@ With Invizi you can safely track and trade your digital assets - all your data i
 
 Our mission is to empower people to manage their digital assets without compromising their privacy. We want to usher in a world without data breaches, predatory ad models, commoditization of user’s data and abuse of privacy. 
 
-## How to build from source
+## How to build and run from source
 
+### Prerequisites
+- [Git](https://git-scm.com/) 
+- [Node.JS](https://nodejs.org/en/) v12.x
+- [NPM](https://www.npmjs.com/get-npm)
+- A C/C++ compiler tool chain for your platform
+
+### 1. Get the source
 ``` bash
 
 git clone https://github.com/invizi/invizi.git
+```
+### 2. Build
 
+``` bash
 cd invizi
 
 # install dependencies
 npm install
-
-# build application for production
-npm run build
-
 ```
-
+#### Build for Mac
+``` bash
+npm run build:mac
+```
+#### Build for Windows
+``` bash
+npm run build:win
+```
+#### Build for Linux
+``` bash
+npm run build:linux
+```
+the executable will be placed in ./build folder
 ## Contributing
 There are many ways in which you can contribute:
 
