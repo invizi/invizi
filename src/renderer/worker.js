@@ -50,6 +50,7 @@ function computeHistorical (event) {
   InviziCache.setItem('historicalData/outdated', true, {persistent: true})
   TradeClient.all().then(() => {
     Historical.preloadBalances().then(result => {
+      InviziCache.setItem('historicalData/outdated', false, {persistent: true})
       event.sender.send('worker-response', {channel: 'historical-computed', data: result})
     }).catch(e => {
       console.log(e)
