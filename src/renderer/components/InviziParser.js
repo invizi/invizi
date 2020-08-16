@@ -47,11 +47,15 @@ const parser = {
   },
 
   async priceOnDate (expr) {
-    const regExp = /^(\w+)(?:\s+)price(?:\s*)on(?:\s*)(\d{2})(?:[//|/-]*)(\d{2})(?:[//|/-]*)(\d{4})/i
+    /* eslint-disable */
+    const regExp = /^(?!.*[^\w-#+'\/\(\)\.\[\]\s]+)price\s*(?:of)?\s+([1-9][0-9]*(?:\.\d+)?|0?\.\d+)\s+((?:[\w-#+'\/\(\)\.\[\]]\s*)+)\s+on\s+(3[01]|[12][0-9]|0[1-9])\/(1[0-2]|0[1-9])\/([0-9]{4})\b/i
+    /* eslint-enable */
 
     const priceOnDateMatch = expr.match(regExp)
     if (priceOnDateMatch) {
-      const [fullMatch, coinSymbol, ...date] = priceOnDateMatch
+      /* eslint-disable */
+      const [fullMatch, quantity, coinSymbol, ...date] = priceOnDateMatch
+      /* eslint-enable */
       const coin = Ticker.coinByIdOrSymbol(coinSymbol.toUpperCase())
       if (coin) {
         const unixDate = convertDateToUnix(date.join(''))
@@ -84,7 +88,10 @@ const parser = {
         }
       }
     }
-    const priceExp = /^price(?:\s*)(?:of)?(?:\s*)([\d|.]*)\s+([\w-]+)/i
+    /* eslint-disable */
+    const priceExp = /^(?!.*[^\w-#+'\/\(\)\.\[\]\s]+)(?!.*\bon (?:3[01]|[12][0-9]|0[1-9])\/(?:1[0-2]|0[1-9])\/(?:[0-9]{4})\b)price\s*(?:of)?\s+([1-9][0-9]*(?:\.\d+)?|0?\.\d+)\s+((?:(?:[\w-#+'\/\(\)\.\[\]]\s*)+(?=\bin\b))|(?:[\w-#+'\/\(\)\.\[\]]+\s*)+)/i
+    /* eslint-enable */
+
     let priceMatch = expr.match(priceExp)
     if (priceMatch) {
       expr = expr.replace(priceMatch[0], `${priceMatch[1]} ${priceMatch[2]} in usd`)
