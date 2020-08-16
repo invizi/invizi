@@ -231,10 +231,9 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
       plotPie (elementId, coins) {
         let names = coins.map(coin => coin.coin_id)
         let compositions = coins.map(coin => coin.composition)
-        let labels = coins.map(coin => `${coin.name} %`)
-        let hoverinfo = 'label+value+text'
+        let hoverinfo = 'value+text+percent'
         if (this.inviziApp.stealthMode) {
-          hoverinfo = 'label+text'
+          hoverinfo = 'text+percent'
         }
 
         let defaultOptions = {
@@ -250,10 +249,8 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
           defaultOptions,
           {
             values: compositions,
-            labels: labels,
             text: names,
             hoverinfo: hoverinfo,
-            textinfo: 'label+text',
             hole: 0.7,
             type: 'pie'}
         )]
