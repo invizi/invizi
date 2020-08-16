@@ -169,7 +169,9 @@ let Ticker = {
       return Object.assign({}, o, {name: `${o.symbol} ${o.name}`})
     })
     if (options && options.includeFiat) {
-      result = result.concat(Forex.symbolsAsObject())
+      let [mainCurrencies, secondaryCurrencies] = Forex.symbolsAsObjectIn2()
+      result.splice(10, 0, ...mainCurrencies)
+      result = result.concat(secondaryCurrencies)
     }
     return result
   },

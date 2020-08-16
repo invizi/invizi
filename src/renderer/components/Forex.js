@@ -110,6 +110,13 @@ var Forex = {
     return this.fillName(this.symbolsWithUSD())
   },
 
+  // Split the result in 2 parts (most important currencies first)
+  symbolsAsObjectIn2 () {
+    let second = this.symbolsAsObject()
+    let first = second.splice(0, 5)
+    return [first, second]
+  },
+
   isStableCoinOrFiat (coinId) {
     if (!coinId) return false
 
