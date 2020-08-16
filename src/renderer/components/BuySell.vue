@@ -395,7 +395,7 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
        executionType: undefined,
        operationLabels: [{name: 'Buy', id: 'buy'}, {name: 'Sell', id: 'sell'}],
        operation: undefined,
-       mainExchanges: ['binance', 'poloniex', 'bitfinex', 'bittrex', 'okex', 'kraken'],
+       mainExchanges: ['binance', 'bitfinex', 'kraken'],
        foundExchanges: [],
        loadingOptions: undefined,
        preparedOrders: [],
