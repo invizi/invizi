@@ -23,8 +23,6 @@
  const _ = require('lodash')
  const moment = require('moment')
 
- FAKE_HISTORICAL_DATA.fake = true
-
  export default {
    title: 'Historical',
    id: 'historical',
@@ -98,23 +96,24 @@
          let currentIndex = clickData.points[0].pointIndex
          plotHistoricalPie(currentIndex)
        })
-
-       if (!newHistoricalData.fake) {
-         this.loading = false
-       }
      }
    },
    mounted () {
+     if (!this.historicalData) {
+       this.historicalData = FAKE_HISTORICAL_DATA
+     }
      ipcRenderer.on('worker-response', (event, output) => {
        if (output.channel !== 'historical-computed') return
        this.historicalData = output.data
+       this.loading = false
      })
      if (InviziCache.getItem('historicalData')) {
        this.historicalData = InviziCache.getItem('historicalData')
+       InviziCache.getItemFromDbCache('historicalData/outdated').then(result => { this.loading = result })
      } else {
+       this.loading = true
        ipcRenderer.send('worker-request', {channel: 'compute-historical'})
      }
-     this.historicalData = FAKE_HISTORICAL_DATA
    }
  }
 </script>
