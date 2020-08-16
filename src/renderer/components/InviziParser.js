@@ -94,7 +94,7 @@ const parser = {
 
     let priceMatch = expr.match(priceExp)
     if (priceMatch) {
-      expr = expr.replace(priceMatch[0], `${priceMatch[1]} ${priceMatch[2]} in usd`)
+      expr = expr.replace(priceMatch[0], `${priceMatch[1]} ${priceMatch[2]} in usd `)
     }
 
     tickerRegex.forEach((tickerReg, index) => {
