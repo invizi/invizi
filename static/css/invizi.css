@@ -21,6 +21,11 @@
   border-color: var(--primary);
 }
 
+.primary-color-imp {
+  background-color: var(--primary) !important;
+  border-color: var(--primary) !important;
+}
+
 body {
   background: var(--background-color);
 }

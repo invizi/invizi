@@ -4,7 +4,8 @@
 
       <div class="">
         <div class="row">
-          <div class="col-lg-8" :class="{blurred: loading}" id="historic" style="padding-left: 0; padding-right: 0;"></div>
+          <v-progress-linear indeterminate background-color="blue-grey" color="primary-color-imp" v-show="loading"></v-progress-linear>
+          <div class="col-lg-8" id="historic" style="padding-left: 0; padding-right: 0;"></div>
           <div class="col-lg-4" id="historic-slice-pie" style=""></div>
         </div>
       </div>
