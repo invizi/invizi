@@ -81,7 +81,7 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
                           waves-light" @click="newLogin()" style="margin-left: 0;">Create Account</button>
           </div>
           <div class="text-left">
-            <em class="text-small">If you lose or forget your password, Invizi cannot recover your data. Remember that passwords are case-sensitive.</em>
+            <em class="text-small">All your data is saved locally so if you lose or forget your password, Invizi cannot recover your data. Remember that passwords are case-sensitive.</em>
           </div>
         </div>
       </div>
