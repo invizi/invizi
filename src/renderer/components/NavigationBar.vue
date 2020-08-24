@@ -1,19 +1,19 @@
 <!--
-Copyright (C) 2018-2020 AI Atelier Ltd.
+     Copyright (C) 2018-2020 AI Atelier Ltd.
 
-This file is part of Invizi.
+     This file is part of Invizi.
 
-Invizi is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or (at
-your option) any later version.
+     Invizi is free software: you can redistribute it and/or modify
+     it under the terms of the GNU General Public License as published by
+     the Free Software Foundation, either version 3 of the License, or (at
+     your option) any later version.
 
-Invizi is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-You should have received a copy of the GNU General Public License
-along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
+     Invizi is distributed in the hope that it will be useful,
+     but WITHOUT ANY WARRANTY; without even the implied warranty of
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     GNU General Public License for more details.
+     You should have received a copy of the GNU General Public License
+     along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
 -->
 <template>
   <!-- Navbar -->
@@ -39,7 +39,13 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
       <li>
         <a href="#" class="nav-link waves-effect" @click.stop="$emit('show-omni')">
           <img src="static/icons/font-awesome/search.svg" class="icon">
-          <div>Omni Search</div>
+          <div v-tooltip.right="{content: 'Ctrl+P or Cmd+P', delay: {show: 600} }">Omni Search</div>
+        </a>
+      </li>
+      <li>
+        <a href="#" class="nav-link waves-effect" @click.stop="$emit('show-feedback')">
+          <i class="fa fa-comment" title="feedback" style="font-size: 20px;"></i>
+          <div><em>Give us Feedback</em></div>
         </a>
       </li>
     </ul>
@@ -57,7 +63,8 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
    {name: 'Coins', path: '/coins', iconPath: 'static/icons/font-awesome/bitcoin.svg'},
    {name: 'Indexes', path: '/asset-indexes', iconPath: 'static/icons/font-awesome/chart-line.svg'},
    {name: 'Tools', path: '/tools', iconPath: 'static/icons/font-awesome/wrench.svg'},
-   {name: 'Settings', path: '/settings', iconPath: 'static/icons/font-awesome/cogs.svg'}
+   {name: 'Settings', path: '/settings', iconPath: 'static/icons/font-awesome/cogs.svg'},
+   {name: 'Help', path: '/help', iconPath: 'static/icons/font-awesome/question-circle-regular.svg'}
  ]
 
  export default {
