@@ -19,7 +19,19 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
   <div id="app">
     <snackbar></snackbar>
     <app-dialog></app-dialog>
+    <FeedbackForm></FeedbackForm>
     <v-app  @keyup.esc="dialog3 = false" @keyup.enter="showOmni()" dark>
+
+      <transition
+        name="custom-classes-transition"
+        enter-active-class="animated slideInRight faster"
+        leave-active-class="animated slideOutRight faster">
+        <div style="bottom: 10px; margin-right: 2px; position: fixed; right: 10px; z-index: 1000;" id="feedback" v-show="showBottomBar">
+          <i @click="showFeedbackForm" v-tooltip.top="'Give us feedback'" class="clickable fa fa-comment fa-2x" title="feedback" style="margin-right: 20px"></i>
+          <i @click="showHelp" v-tooltip.top="'Help'" class="clickable fa fa-question-circle fa-2x" title="help" style="margin-right: 10px"></i>
+          <i v-tooltip.top="'Hide'" class="clickable fa fa-chevron-right" title="close" @click="showBottomBar = false" style="color: var(--gray)"></i>
+        </div>
+      </transition>
     <div id="omni-dialog-attach"> </div>
     <!--Main Navigation-->
     <header style="z-index: 9999">
@@ -49,84 +61,83 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
     </header>
     <!--Main layout-->
     <main>
-      <navigation-bar v-on:show-omni="showOmni()"> </navigation-bar>
+      <navigation-bar v-on:show-omni="showOmni" v-on:show-feedback="showFeedbackForm" v-on:show-help="showHelp"> </navigation-bar>
       <div class="main-content">
         <router-view></router-view>
       </div>
     </main>
-    <!--Used to apply blur filter to some svg on loading -->
-    <svg>
-      <defs>
-        <filter id="blur">
-          <feGaussianBlur stdDeviation="5" />
-        </filter>
-      </defs>
-    </svg>
     </v-app>
   </div>
 </template>
 
 <script>
-  import EventBus from '@/components/EventBus'
-  import InviziParser from '@/components/InviziParser'
-  import CoinImage from '@/components/CoinImage'
-  import NavigationBar from '@/components/NavigationBar'
-  import AppMixin from '@/components/AppMixin'
-  import Snackbar from '@/components/Snackbar'
-  import Dialog from '@/components/Dialog'
+ import EventBus from '@/components/EventBus'
+ import InviziParser from '@/components/InviziParser'
+ import CoinImage from '@/components/CoinImage'
+ import NavigationBar from '@/components/NavigationBar'
+ import AppMixin from '@/components/AppMixin'
+ import Snackbar from '@/components/Snackbar'
+ import Dialog from '@/components/Dialog'
+ import FeedbackForm from '@/components/FeedbackForm'
+ import KeyBindings from '@/utils/KeyBindings'
 
-  const _ = require('lodash')
-  const Mousetrap = require('mousetrap')
+ const _ = require('lodash')
 
-  export default {
-    name: 'electron-vue',
-    mixins: [AppMixin],
-    components: {
-      'coin-image': CoinImage,
-      'snackbar': Snackbar,
-      'app-dialog': Dialog,
-      'navigation-bar': NavigationBar
-    },
-    data () {
-      return {
-        tickerBTC: {},
-        inviziApp: {},
-        id: null,
-        query: null,
-        queryResults: [],
-        dialog3: false
-      }
-    },
-    methods: {
-      showOmni () {
-        this.query = null
-        this.dialog3 = true
-        this.queryResults = []
-        setTimeout(() => {
-          this.$refs.focus.focus()
-        }, 500)
-      },
-      async onQueryChange () {
-        this.queryResults = await InviziParser.eval(this.query)
-      },
-      onQueryDebounce: _.debounce(function () {
-        this.onQueryChange()
-      }, 100)
-    },
-    mounted () {
-      Mousetrap.bind(['command+p', 'ctrl-p'], () => {
-        this.showOmni()
-      })
-      Mousetrap.bind('backspace', () => {
-        this.$router.go(-1)
-      })
+ export default {
+   name: 'electron-vue',
+   mixins: [AppMixin],
+   components: {
+     'coin-image': CoinImage,
+     FeedbackForm,
+     'snackbar': Snackbar,
+     'app-dialog': Dialog,
+     'navigation-bar': NavigationBar
+   },
+   data () {
+     return {
+       showBottomBar: true,
+       tickerBTC: {},
+       inviziApp: {},
+       id: null,
+       query: null,
+       queryResults: [],
+       dialog3: false
+     }
+   },
+   methods: {
+     showFeedbackForm () {
+       EventBus.$emit('FeedbackForm/show')
+     },
+     showHelp () {
+       this.$router.push('help')
+     },
+     showOmni () {
+       this.query = null
+       this.dialog3 = true
+       this.queryResults = []
+       setTimeout(() => {
+         this.$refs.focus.focus()
+       }, 500)
+     },
+     async onQueryChange () {
+       this.queryResults = await InviziParser.eval(this.query)
+     },
+     onQueryDebounce: _.debounce(function () {
+       this.onQueryChange()
+     }, 100)
+   },
+   mounted () {
+     KeyBindings.init()
+     EventBus.$on('Ticker/get', (message) => {
+       this.tickerBTC = _.find(message.data, {id: 'bitcoin'})
+     })
 
-      EventBus.$on('Ticker/get', (message) => {
-        this.tickerBTC = _.find(message.data, {id: 'bitcoin'})
-      })
-    }
-  }
-  </script>
+     EventBus.$on('Omni/show', () => {
+       this.showOmni()
+     })
+   }
+ }
+</script>
 
   <style lang="scss">
    $primary-background: var(--background-color);
@@ -407,5 +418,119 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
 
    .blurred {
      filter: url(#blur);
+   }
+   .js-plotly-plot .plotly .modebar {
+     z-index: 1 ;
+   }
+
+   .tooltip {
+     font-family: var(--font-family-text);
+     display: block !important;
+     z-index: 10000;
+
+     .tooltip-inner {
+       text-align: left;
+       background: var(--background-color-lighter);
+       color: white;
+       border-radius: 5px;
+       padding: 5px 10px 4px;
+     }
+
+     .tooltip-arrow {
+       width: 0;
+       height: 0;
+       border-style: solid;
+       position: absolute;
+       margin: 5px;
+       border-color: var(--background-color-lighter);
+       z-index: 1;
+     }
+
+     &[x-placement^="top"] {
+       margin-bottom: 5px;
+
+       .tooltip-arrow {
+         border-width: 5px 5px 0 5px;
+         border-left-color: transparent !important;
+         border-right-color: transparent !important;
+         border-bottom-color: transparent !important;
+         bottom: -5px;
+         left: calc(50% - 5px);
+         margin-top: 0;
+         margin-bottom: 0;
+       }
+     }
+
+     &[x-placement^="bottom"] {
+       margin-top: 5px;
+
+       .tooltip-arrow {
+         border-width: 0 5px 5px 5px;
+         border-left-color: transparent !important;
+         border-right-color: transparent !important;
+         border-top-color: transparent !important;
+         top: -5px;
+         left: calc(50% - 5px);
+         margin-top: 0;
+         margin-bottom: 0;
+       }
+     }
+
+     &[x-placement^="right"] {
+       margin-left: 5px;
+
+       .tooltip-arrow {
+         border-width: 5px 5px 5px 0;
+         border-left-color: transparent !important;
+         border-top-color: transparent !important;
+         border-bottom-color: transparent !important;
+         left: -5px;
+         top: calc(50% - 5px);
+         margin-left: 0;
+         margin-right: 0;
+       }
+     }
+
+     &[x-placement^="left"] {
+       margin-right: 5px;
+
+       .tooltip-arrow {
+         border-width: 5px 0 5px 5px;
+         border-top-color: transparent !important;
+         border-right-color: transparent !important;
+         border-bottom-color: transparent !important;
+         right: -5px;
+         top: calc(50% - 5px);
+         margin-left: 0;
+         margin-right: 0;
+       }
+     }
+
+     &.popover {
+       $color: var(--background-color-lighter);
+       .popover-inner {
+         background: $color;
+         color: var(--white-text-color);
+         padding: 24px;
+         border-radius: 5px;
+         box-shadow: 0 5px 30px rgba(black, .1);
+       }
+
+       .popover-arrow {
+         border-color: $color;
+       }
+     }
+
+     &[aria-hidden='true'] {
+       visibility: hidden;
+       opacity: 0;
+       transition: opacity .15s, visibility .15s;
+     }
+
+     &[aria-hidden='false'] {
+       visibility: visible;
+       opacity: 1;
+       transition: opacity .15s;
+     }
    }
   </style>

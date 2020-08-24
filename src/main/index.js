@@ -64,6 +64,7 @@ function createWindow () {
   mainWindow.webContents.on('will-navigate', (event, url) => {
     event.preventDefault()
   })
+
   ipcMain.on('worker-ready', (event, data) => {
     mainWindow.loadURL(winURL)
     mainWindow.maximize()
@@ -177,6 +178,10 @@ function addMenu () {
     {
       role: 'help',
       submenu: [
+        {
+          label: 'Latest Download',
+          click () { require('electron').shell.openExternal('https://invizi.co/download') }
+        },
         {
           label: 'Learn More',
           click () { require('electron').shell.openExternal('https://invizi.co') }

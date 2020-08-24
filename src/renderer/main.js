@@ -35,6 +35,7 @@ import InviziStorage from '@/utils/InviziStorage'
 import InviziDirectives from '@/components/InviziDirectives'
 import DataManager from '@/managers/DataManager'
 import CurrencyManager from '@/components/CurrencyManager'
+import VTooltip from 'v-tooltip'
 
 const TWEEN = require('@tweenjs/tween.js')
 const math = require('mathjs')
@@ -61,6 +62,8 @@ InviziCache.loadDbToMemory().then((val) => {
   TradeClient.table.toArrayRaw().then(result => {
     InviziCache.setItem('TradeClient.trades.toArrayRaw()', result)
   })
+
+  Vue.use(VTooltip)
   Vue.use(Vuetify, {
     theme: {
       primary: '#4edeff'
