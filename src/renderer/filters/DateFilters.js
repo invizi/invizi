@@ -41,3 +41,15 @@ Vue.filter('dateNameDisplay', function (value) {
   let splitValue = value.split('_')
   return splitValue[0] + splitValue[1].slice(0, 1)
 })
+
+Vue.filter('dateToHuman', function (value) {
+  if (value) {
+    return moment(value).format('DD-MM-YYYY HH:mm:ss')
+  }
+})
+
+Vue.filter('fromNow', function (value) {
+  if (value) {
+    return moment(value).fromNow()
+  }
+})

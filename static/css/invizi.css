@@ -13,12 +13,18 @@
   --white-text-color: #FFF;
   --green: #82fd87;
   --green-dark:   hsla(122, 97%, 25%, 1);
-
+  --purple: #cc73f1;
+  --secondary: var(--purple);
 }
 
 .primary-color {
   background-color: var(--primary);
   border-color: var(--primary);
+}
+
+.secondary-color {
+  background-color: var(--secondary) !important;
+  border-color: var(--secondary) !important;
 }
 
 .primary-color-imp {
@@ -309,4 +315,8 @@ input[type="radio"]:focus {
 
 .blurred {
   filter: url(#blur);
+}
+
+.bold {
+  font-weight: bold;
 }

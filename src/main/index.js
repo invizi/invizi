@@ -17,11 +17,9 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
 */
 'use strict'
 
-import { app, BrowserWindow, Menu } from 'electron'
+import { app, BrowserWindow, Menu, ipcMain, shell } from 'electron'
 import { autoUpdater } from 'electron-updater'
 import hashPassword from '../crypto/hashPassword'
-const electron = require('electron')
-const ipcMain = electron.ipcMain
 
 /**
  * Set `__static` path to static files in production
@@ -62,7 +60,11 @@ function createWindow () {
   mainWindow.setMenuBarVisibility(false)
 
   mainWindow.webContents.on('will-navigate', (event, url) => {
+    let IS_INVIZI_CO = /^https:\/\/invizi\.co\/.*/
     event.preventDefault()
+    if (IS_INVIZI_CO.test(url)) {
+      shell.openExternal(url)
+    }
   })
 
   ipcMain.on('worker-ready', (event, data) => {
@@ -180,11 +182,11 @@ function addMenu () {
       submenu: [
         {
           label: 'Latest Download',
-          click () { require('electron').shell.openExternal('https://invizi.co/download') }
+          click () { shell.openExternal('https://invizi.co/download') }
         },
         {
           label: 'Learn More',
-          click () { require('electron').shell.openExternal('https://invizi.co') }
+          click () { shell.openExternal('https://invizi.co') }
         }
       ]
     }

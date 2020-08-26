@@ -36,6 +36,18 @@
           <div>{{route.name}}</div>
         </router-link>
       </li>
+
+      <li>
+        <a href="#/notifications" class="nav-link waves-effect">
+          <span class="badge" style="position: absolute" v-show="!inviziApp.hideNotifications && unreadIds.length > 0">
+            <span class="badge__badge secondary-color">
+              <span style="color: var(--gray-darker)">{{unreadIds.length}}</span>
+            </span>
+          </span>
+          <i class="fa fa-bell" title="feedback" style="font-size: 20px;"> </i>
+          <div>Notifications</div>
+        </a>
+      </li>
       <li>
         <a href="#" class="nav-link waves-effect" @click.stop="$emit('show-omni')">
           <img src="static/icons/font-awesome/search.svg" class="icon">
@@ -53,8 +65,10 @@
 </template>
 
 <script>
- import TradeClient from '@/components/TradeClient'
  import EventBus from '@/components/EventBus'
+ import InviziCache from '@/components/InviziCache'
+ import TradeClient from '@/components/TradeClient'
+ const _ = require('lodash')
  const routes = [
    {name: 'Dashboard', path: '/main-dashboard', iconPath: 'static/icons/font-awesome/chart-pie.svg', needTrades: true},
    {name: 'Accounts', path: '/accounts/local1', iconPath: 'static/icons/font-awesome/wallet.svg'},
@@ -75,6 +89,7 @@
        routes: routes,
        hasAccountsWithTrades: false,
        inviziApp: window.inviziApp,
+       unreadIds: [],
        loggedIn: false
      }
    },
@@ -96,6 +111,14 @@
      EventBus.$once('loggedIn', () => {
        this.loggedIn = true
        this.getAccounts()
+     })
+
+     EventBus.$on('Notification/get', (notifications) => {
+       // Check if any new notifications
+       let receivedIds = notifications.map(notification => notification.id)
+       let read = InviziCache.getItem('Notifications.read') || {}
+       let readIds = Object.keys(read).map(id => parseInt(id))
+       this.unreadIds = _.difference(receivedIds, readIds)
      })
    },
    destroyed () {

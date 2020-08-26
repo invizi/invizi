@@ -131,7 +131,6 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
      EventBus.$on('Ticker/get', (message) => {
        this.tickerBTC = _.find(message.data, {id: 'bitcoin'})
      })
-
      EventBus.$on('Omni/show', () => {
        this.showOmni()
      })
