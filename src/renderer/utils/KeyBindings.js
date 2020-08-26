@@ -50,6 +50,10 @@ let keyBindings = {
       Router.push({ path: '/settings' })
     })
 
+    Mousetrap.bind('g n', () => {
+      Router.push({ path: '/notifications' })
+    })
+
     Mousetrap.bind('g t', () => {
       Router.push({ path: '/tools' })
     })

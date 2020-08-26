@@ -29,6 +29,7 @@ import InviziCache from './components/InviziCache'
 import CoinAttributes from './components/CoinAttributes'
 import Ticker from './components/Ticker'
 import Forex from './components/Forex'
+import Notification from './components/Notification'
 import TradeClient from './components/TradeClient'
 import EventBus from '@/components/EventBus'
 import InviziStorage from '@/utils/InviziStorage'
@@ -63,6 +64,8 @@ InviziCache.loadDbToMemory().then((val) => {
     InviziCache.setItem('TradeClient.trades.toArrayRaw()', result)
   })
 
+  Notification.get({persistent: true})
+
   Vue.use(VTooltip)
   Vue.use(Vuetify, {
     theme: {
@@ -73,7 +76,7 @@ InviziCache.loadDbToMemory().then((val) => {
     }
   })
   if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
-  Vue.http = Vue.prototype.$http = axios
+  Vue.http = Vue.prototype.$http = axios // TOREMOVE
   Vue.config.productionTip = false
 
   /* eslint-disable no-new */

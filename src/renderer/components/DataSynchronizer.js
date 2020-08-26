@@ -20,6 +20,7 @@ import InviziTimer from '@/components/InviziTimer'
 import InviziCache from '@/components/InviziCache'
 import Ticker from '@/components/Ticker'
 import Forex from '@/components/Forex'
+import Notification from '@/components/Notification'
 import OnlineAccountClient from '@/models/OnlineAccountClient'
 
 const MIN_EXCHANGE_RATE_LIMIT = 60000
@@ -66,9 +67,12 @@ var DataSynchronizer = {
     console.log('DataSynchronizer.start')
     // Get list of exchanges to synchronize
     Forex.get({persistent: true})
-    InviziTimer.repeat(Forex.get, 900000, Ticker) // Fetch every 15 min
+    InviziTimer.repeat(Forex.get, 900000, Forex) // Fetch every 15 min
     await Ticker.get({persistent: true})
     InviziTimer.repeat(Ticker.get, 30000, Ticker) // Fetch every 30 s
+
+    Notification.get({persistent: true})
+    InviziTimer.repeat(Notification.get, 1800, Notification) // Fetch every 30 min
     let exchanges = await this.userExchanges()
     let tickersPromises = []
     for (let exchangeId of exchanges) {

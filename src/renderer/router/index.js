@@ -90,6 +90,11 @@ const router = new Router({
       component: require('@/components/AssetIndexes').default
     },
     {
+      path: '/notifications',
+      name: 'notifications',
+      component: require('@/components/notifications/Notifications').default
+    },
+    {
       path: '*',
       redirect: '/'
     }

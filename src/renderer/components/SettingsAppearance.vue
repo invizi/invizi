@@ -18,10 +18,13 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
 <template>
   <div>
     <settings-save v-on:reset="reset()" v-on:save="save()"></settings-save>
-    <h3 class="">Trader Mode</h3>
     <br>
     <input type="checkbox" id="checkbox" v-model="inviziApp.traderMode">
     <label for="checkbox">Show trader UI</label>
+    <br>
+    <br>
+    <input type="checkbox" id="checkbox" v-model="inviziApp.hideNotifications">
+    <label for="checkbox">Hide Notifications</label>
   </div>
 </template>
 
@@ -38,11 +41,14 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
    methods: {
      save () {
        Settings.save('traderMode', this.inviziApp.traderMode)
+       Settings.save('hideNotifications', this.inviziApp.hideNotifications)
        Snackbar.success('Settings saved')
      },
      reset () {
        this.inviziApp.traderMode = false
+       this.inviziApp.hideNotifications = false
        Settings.reset('traderMode')
+       Settings.reset('hideNotifications')
      }
    },
    data () {
