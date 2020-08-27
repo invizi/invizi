@@ -27,5 +27,8 @@ jobs:
         run: npm ci
       - name: lint
         run: npm run lint
-      - name: test
-        run: npm run test
+      - name: Run headless test
+        uses: GabrielBB/xvfb-action@v1.2
+        with:
+          working-directory: ./ #optional
+          run: npm test
