@@ -85,9 +85,9 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
           </div>
         </div>
       </div>
-
-      <div>
-      </div>
+    </div>
+    <div style="position: fixed; bottom: 5%; left: 5%;">
+      <img v-tooltip="'Delete database'" src="static/icons/font-awesome/redo-solid.svg" class="icon clickable" @click="emptyInviziAccount">
     </div>
   </section>
 </template>
@@ -95,6 +95,9 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
 <script>
   import UserManager from '@/components/UserManager'
   import OnlineAccountClient from '@/models/OnlineAccountClient'
+  import DatabaseHelper from '@/utils/DatabaseHelper'
+  import Dialog from '@/utils/Dialog'
+  import ElectronUtils from '@/utils/ElectronUtils'
   import LogoTitle from '@/components/LogoTitle'
   import EventBus from '@/components/EventBus'
 
@@ -114,6 +117,13 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
       }
     },
     methods: {
+      emptyInviziAccount () {
+        Dialog.show({message: 'Are you sure you want to delete your local database ?', actions: {onConfirm: this.doEmpty}})
+      },
+      async doEmpty () {
+        await DatabaseHelper.reset()
+        ElectronUtils.relaunchApp()
+      },
       onPasswordChange () {
         this.errorMsg = ''
       },
@@ -166,5 +176,11 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
  .subtitles h2 {
    font-size: 1rem;
    text-align: left;
+ }
+ .icon {
+   filter: invert(80%);
+   width: 20px;
+   height: 20px;
+   margin-right: 5px;
  }
 </style>

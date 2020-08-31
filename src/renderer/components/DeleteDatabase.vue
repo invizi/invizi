@@ -27,11 +27,15 @@ along with Invizi.  If not, see <https://www.gnu.org/licenses/>.
 
 <script>
  import DatabaseHelper from '@/utils/DatabaseHelper'
+ import Dialog from '@/utils/Dialog'
  import ElectronUtils from '@/utils/ElectronUtils'
  export default {
    title: 'Delete Database',
    methods: {
-     async emptyInviziAccount () {
+     emptyInviziAccount () {
+       Dialog.show({message: 'Are you sure you want to delete your local database ?', actions: {onConfirm: this.doEmpty}})
+     },
+     async doEmpty () {
        await DatabaseHelper.reset()
        ElectronUtils.relaunchApp()
      }
